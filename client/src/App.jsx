@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import "./App.css";
 import CourseSearchBox from "./CourseSearchBox";
+import SignUpPopup from "./SignUpPopup";
 import {
   CheckCircleIcon,
   EyeSlashIcon,
@@ -14,6 +15,9 @@ function App() {
   //instead we'll probably need to hit the courses api and pass the courses as a state to the CourseSearchBox component.
   const baseURL = "http://localhost:5001/api/v1/users";
   const [data, setData] = useState(null);
+  const [signUp, setSignUp] = useState(false);
+  const [signIn, setSignIn] = useState(false);
+  const [createReview, setCreateReview] = useState(false);
 
   useEffect(() => {
     axios.get(baseURL).then((response) => setData(response.data));
@@ -21,6 +25,12 @@ function App() {
 
   return (
     <div className="flex justify-center text-center flex-col font-mono">
+      {(signUp || signIn || createReview) && <div className="relative z-50">
+          <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity">        </div>
+
+        {signUp && <SignUpPopup onClick={() => { setSignUp(!signUp)}} />}
+      </div>}
+      
       <div className="flex flex-row font-mono py-2">
         <div className="w-full">
           <img className="ml-4" src={smallRecenseo}></img>
@@ -28,7 +38,7 @@ function App() {
         <div className="flex w-full justify-end items-center">
           <div className="flex flex-row gap-3 mr-4">
             <button>Login</button>
-            <button className="bg-red-800 rounded-lg p-1 text-yellow-300">
+            <button className="bg-red-800 rounded-lg p-1 text-yellow-300" onClick={() => { setSignUp(!signUp)}}>
               Sign up
             </button>
           </div>
