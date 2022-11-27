@@ -1,8 +1,9 @@
 import express from "express";
 import dotenv from "dotenv";
 import connectMongoDB from "./config/db.js";
-import playerRoute from "./routes/playerRoute.js";
-import gameRoute from "./routes/gameRoute.js";
+import userRoute from "./routes/userRoute.js";
+import reviewRoute from "./routes/reviewRoute.js";
+import voteRoute from "./routes/voteRoute.js";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import asyncHandler from "express-async-handler";
@@ -19,12 +20,12 @@ app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use("/api/users", playerRoute);
-app.use("/api/reviews", gameRoute);
-app.use("/api/votes", gameRoute);
+app.use("/api/users", userRoute);
+app.use("/api/reviews", reviewRoute);
+app.use("/api/votes", voteRoute);
 
 app.get(
-  "/api/getPlayerCookie",
+  "/api/getUserCookie",
   asyncHandler(async (req, res) => {
     /*res.send({
       playerName: req.cookies.playerName,
@@ -35,7 +36,7 @@ app.get(
 );
 
 app.get(
-  "/api/deletePlayerCookie",
+  "/api/deleteUserCookie",
   asyncHandler(async (req, res) => {
     /*res.clearCookie("playerName");
     res.clearCookie("playerNumber");
