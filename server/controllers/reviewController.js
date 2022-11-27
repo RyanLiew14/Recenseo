@@ -1,6 +1,5 @@
 import asyncHandler from "express-async-handler";
-import reviewModel from "../models/reviewModel.js";
-import Review from "../models/ReviewModel.js";
+import Review from "../models/reviewModel.js";
 
 const createReview = asyncHandler(async (req, res) => {
   const newReview = await Review.create({
@@ -55,7 +54,7 @@ const updateReview = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("Review not found.");
   }
-  const updatedReview = await reviewModel.findByIdAndUpdate(
+  const updatedReview = await Review.findByIdAndUpdate(
     req.params.id,
     req.body,
     {

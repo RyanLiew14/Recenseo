@@ -1,5 +1,4 @@
 import asyncHandler from "express-async-handler";
-import reviewModel from "../models/reviewModel.js";
 import User from "../models/UserModel.js";
 
 const createUser = asyncHandler(async (req, res) => {
@@ -51,13 +50,9 @@ const updateUser = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("User not found.");
   }
-  const updatedUser = await userModel.findByIdAndUpdate(
-    req.params.id,
-    req.body,
-    {
-      new: true,
-    }
-  );
+  const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+  });
   res.status(200).json({ updatedUser });
 });
 

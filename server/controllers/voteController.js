@@ -1,5 +1,4 @@
 import asyncHandler from "express-async-handler";
-import reviewModel from "../models/reviewModel.js";
 import Vote from "../models/VoteModel.js";
 
 const createVote = asyncHandler(async (req, res) => {
@@ -48,13 +47,9 @@ const updateVote = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("Vote not found.");
   }
-  const updatedVote = await voteModel.findByIdAndUpdate(
-    req.params.id,
-    req.body,
-    {
-      new: true,
-    }
-  );
+  const updatedVote = await Vote.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+  });
   res.status(200).json({ updatedVote });
 });
 
