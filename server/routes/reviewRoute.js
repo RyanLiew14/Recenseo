@@ -11,7 +11,7 @@ import loggedIn from "../middleware/userAuth.js";
 
 const reviewRoute = express.Router();
 
-reviewRoute.post("/createreview", createReview);
+reviewRoute.post("/createreview", loggedIn, createReview);
 reviewRoute.get("/getuserreview/:userName", loggedIn, getReviewByUser);
 reviewRoute.get("/getcoursereview/:courseName", getReviewByCourse);
 reviewRoute.put("/:id", loggedIn, updateReview);
