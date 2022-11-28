@@ -29,21 +29,17 @@ app.use("/api/courses", courseRoute);
 app.get(
   "/api/getUserCookie",
   asyncHandler(async (req, res) => {
-    /*res.send({
-      playerName: req.cookies.playerName,
-      playerNumber: req.cookies.playerNumber,
-      gameReference: req.cookies.gameReference,
-    });*/
+    res.send({
+      userAuth: req.cookies.userAuth,
+    });
   })
 );
 
 app.get(
   "/api/deleteUserCookie",
   asyncHandler(async (req, res) => {
-    /*res.clearCookie("playerName");
-    res.clearCookie("playerNumber");
-    res.clearCookie("gameReference");
-    res.send("Cookies have been deleted.");*/
+    res.clearCookie("userAuth");
+    res.send("Cookies have been deleted.");
   })
 );
 

@@ -15,13 +15,6 @@ const createReview = asyncHandler(async (req, res) => {
       reviewIsReported: Boolean(req.body.reviewIsReported),
       reviewIsDeleted: Boolean(req.body.reviewIsDeleted),
     });
-    const cookieSettings = {
-      maxAge: 7 * 24 * 60 * 60 * 1000, // Cookie expires in 7 days
-      secure: true,
-      httpOnly: false,
-      sameSite: "lax",
-    };
-    //res.cookie("reviewName", req.body.ReviewName, cookieSettings); cookie implementation example
     res.status(200).json(newReview);
   } catch (error) {
     const errMessage = error.message;

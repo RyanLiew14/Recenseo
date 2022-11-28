@@ -17,11 +17,11 @@ const createUser = asyncHandler(async (req, res) => {
     if (userEmailExists || userNameExists) {
       res.status(400).json({
         error:
-          "An account with the username: " +
+          "An account with the username " +
           req.body.userName +
           " or email " +
           req.body.userEmail +
-          "already exists!",
+          " already exists!",
       });
     } else {
       const hashedPassword = await bcrypt.hash(req.body.userPassword, 10);
@@ -35,22 +35,12 @@ const createUser = asyncHandler(async (req, res) => {
         userType: req.body.userType,
         userIsReported: Boolean(req.body.userIsReported),
       });
-      const cookieSettings = {
-        maxAge: 7 * 24 * 60 * 60 * 1000,
-        secure: true,
-        httpOnly: false,
-        sameSite: "lax",
-      };
-      //res.cookie("userName", req.body.UserName, cookieSettings); cookie implementation example
       res.status(200).json(newUser);
     }
   } catch (error) {
-    // console.log("In here!");
     const errMessage = error.message;
     res.status(400).json({ error: errMessage });
-    //.log(error);
   }
-  //console.log(req.body);
 });
 
 const deleteUser = asyncHandler(async (req, res) => {
@@ -72,6 +62,7 @@ const deleteUser = asyncHandler(async (req, res) => {
   }
 });
 
+// sign in
 const getUser = asyncHandler(async (req, res) => {
   try {
     if (!req.body.userName || !req.body.userPassword) {
@@ -89,6 +80,13 @@ const getUser = asyncHandler(async (req, res) => {
       );
       if (comparison) {
         const token = await jwt.sign({ userName: user.userName }, SECRET);
+        const cookieSettings = {
+          maxAge: 7 * 24 * 60 * 60 * 1000,
+          secure: true,
+          httpOnly: false,
+          sameSite: "lax",
+        };
+        res.cookie("userAuth", token, cookieSettings);
         res.status(200).json(token);
       } else {
         res
