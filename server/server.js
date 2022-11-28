@@ -4,6 +4,7 @@ import connectMongoDB from "./config/db.js";
 import userRoute from "./routes/userRoute.js";
 import reviewRoute from "./routes/reviewRoute.js";
 import voteRoute from "./routes/voteRoute.js";
+import courseRoute from "./routes/courseRoute.js";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import asyncHandler from "express-async-handler";
@@ -23,6 +24,7 @@ app.use(cookieParser());
 app.use("/api/users", userRoute);
 app.use("/api/reviews", reviewRoute);
 app.use("/api/votes", voteRoute);
+app.use("/api/courses", courseRoute);
 
 app.get(
   "/api/getUserCookie",

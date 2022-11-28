@@ -5,7 +5,7 @@ import {
   updateReview,
   getReviewByUser,
   getReviewByCourse,
-} from "../controllers/ReviewController.js";
+} from "../controllers/reviewController.js";
 
 import loggedIn from "../middleware/userAuth.js";
 
