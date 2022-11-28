@@ -1,23 +1,32 @@
 import asyncHandler from "express-async-handler";
 import User from "../models/UserModel.js";
+import bcrypt from "bcryptjs";
+
+const { SECRET = "secret" } = process.env;
 
 const createUser = asyncHandler(async (req, res) => {
-  const newUser = await User.create({
-    userName: req.body.UserName,
-    userEmail: req.body.userEmail,
-    userPassword: req.body.userPassword,
-    userFirstName: req.body.userFirstName,
-    userLastName: reviewModel.body.userLastName,
-    userType: reviewModel.body.userType,
-  });
-  const cookieSettings = {
-    maxAge: 7 * 24 * 60 * 60 * 1000,
-    secure: true,
-    httpOnly: false,
-    sameSite: "lax",
-  };
-  //res.cookie("userName", req.body.UserName, cookieSettings); cookie implementation example
-  res.status(200).json(newUser);
+  try {
+    hashedPassword = await bcrypt.hash(req.body.userPassword, 10);
+
+    const newUser = await User.create({
+      userName: req.body.userName,
+      userEmail: req.body.userEmail,
+      userPassword: hashedPassword,
+      userFirstName: req.body.userFirstName,
+      userLastName: reviewModel.body.userLastName,
+      userType: reviewModel.body.userType,
+    });
+    const cookieSettings = {
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+      secure: true,
+      httpOnly: false,
+      sameSite: "lax",
+    };
+    //res.cookie("userName", req.body.UserName, cookieSettings); cookie implementation example
+    res.status(200).json(newUser);
+  } catch (error) {
+    res.status(400).json({ error });
+  }
 });
 
 const deleteUser = asyncHandler(async (req, res) => {
@@ -31,17 +40,23 @@ const deleteUser = asyncHandler(async (req, res) => {
 });
 
 const getUser = asyncHandler(async (req, res) => {
-  //console.log(JSON.stringify(req.params));
-  //if (!req.body.userReference) {
-  // res.status(400);
-  //throw new Error("User Reference not included in request body.");
-  // }
-  const user = await User.findOne({ userReference: req.params.userReference });
-  if (!user) {
-    res.status(400);
-    throw new Error("User not found.");
+  try {
+    if (!req.body.userName) {
+      res.status(400);
+      throw new Error("userName not included in request body.");
+    }
+    const user = await User.findOne({
+      userName: req.params.userName,
+    });
+    if (!user) {
+      res.status(400);
+      throw new Error("User not found.");
+    } else {
+      res.status(200).json({ user });
+    }
+  } catch (error) {
+    res.status(400).json({ error });
   }
-  res.status(200).json({ user });
 });
 
 const updateUser = asyncHandler(async (req, res) => {
