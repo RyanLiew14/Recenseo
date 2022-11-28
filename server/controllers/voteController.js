@@ -1,56 +1,81 @@
 import asyncHandler from "express-async-handler";
 import Vote from "../models/VoteModel.js";
+import mongoose from "mongoose";
 
 const createVote = asyncHandler(async (req, res) => {
-  const newVote = await Vote.create({
-    voteCreatedFor: req.body.voteCreatedFor,
-    voteCreatedBy: req.body.voteCreatedBy,
-    voteType: req.body.voteType,
-  });
-  const cookieSettings = {
-    maxAge: 7 * 24 * 60 * 60 * 1000, // Cookie expires in 7 days
-    secure: true,
-    httpOnly: false,
-    sameSite: "lax",
-  };
-  //res.cookie("voteName", req.body.VoteName, cookieSettings); cookie implementation example
-  res.status(200).json(newVote);
+  try {
+    const newVote = await Vote.create({
+      voteCreatedFor: req.body.voteCreatedFor,
+      voteCreatedBy: req.body.voteCreatedBy,
+      voteType: req.body.voteType,
+      voteIsDeleted: Boolean(req.body.voteIsDeleted),
+    });
+    res.status(200).json(newVote);
+  } catch (error) {
+    const errMessage = error.message;
+    res.status(400).json(errMessage);
+  }
 });
 
 const deleteVote = asyncHandler(async (req, res) => {
-  const existingVote = await Vote.findById(req.params.id);
-  if (!existingVote) {
-    res.status(400);
-    throw new Error("Vote not found.");
+  try {
+    const voteId = mongoose.Types.ObjectId(req.params.id);
+    const existingVote = await Vote.findById(voteId);
+    if (!existingVote) {
+      res.status(400);
+      throw new Error("Vote with id" + req.params.id + " not found.");
+    }
+    if (existingVote.voteCreatedBy !== req.body.voteCreatedBy) {
+      res.status(400);
+      throw new Error(
+        "The vote with id " +
+          req.params.id +
+          " was not created by the user with username " +
+          req.body.voteCreatedBy
+      );
+    }
+    await existingVote.remove();
+    res.status(200).json({ message: "Removed vote with id " + req.params.id });
+  } catch (error) {
+    const errMessage = error.message;
+    res.status(400).json(errMessage);
   }
-  await existingVote.remove();
-  res.status(200).json({ id: req.params.id });
 });
 
-const getVote = asyncHandler(async (req, res) => {
-  //console.log(JSON.stringify(req.params));
-  //if (!req.body.voteReference) {
-  // res.status(400);
-  //throw new Error("Vote Reference not included in request body.");
-  // }
-  const vote = await Vote.findOne({ voteReference: req.params.voteReference });
-  if (!vote) {
-    res.status(400);
-    throw new Error("Vote not found.");
+const getVoteByCourse = asyncHandler(async (req, res) => {
+  try {
+    const existingVotes = await Vote.find({
+      voteCreatedFor: req.params.reviewId,
+    });
+    if (!existingVotes) {
+      res.status(400);
+      throw new Error(
+        "No votes were found for the vote with id: " + req.params.reviewId
+      );
+    }
+    res.status(200).json({ existingVotes });
+  } catch (error) {
+    const errMessage = error.message;
+    res.status(400).json(errMessage);
   }
-  res.status(200).json({ vote });
 });
 
 const updateVote = asyncHandler(async (req, res) => {
-  const vote = await Vote.findById(req.params.id);
-  if (!vote) {
-    res.status(400);
-    throw new Error("Vote not found.");
+  try {
+    const voteId = mongoose.Types.ObjectId(req.params.id);
+    const existingVote = await Vote.findById(voteId);
+    if (!existingVote) {
+      res.status(400);
+      throw new Error("Vote with id " + req.params.id + " not found.");
+    }
+    const updatedVote = await Vote.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
+    res.status(200).json({ updatedVote });
+  } catch (error) {
+    const errMessage = error.message;
+    res.status(400).json(errMessage);
   }
-  const updatedVote = await Vote.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-  });
-  res.status(200).json({ updatedVote });
 });
 
-export { createVote, deleteVote, getVote, updateVote };
+export { createVote, deleteVote, getVoteByCourse, updateVote };

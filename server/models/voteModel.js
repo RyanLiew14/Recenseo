@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const voteSchema = mongoose.Schema({
   voteCreatedFor: {
     // The review which this vote was created for (using ObjectId)
-    type: mongoose.Schema.Types.ObjectId,
+    type: String,
     required: true,
   },
   voteCreatedBy: {
@@ -14,6 +14,10 @@ const voteSchema = mongoose.Schema({
   voteType: {
     // Upvote or downvote (Can change to bool)
     type: String,
+    required: true,
+  },
+  voteIsDeleted: {
+    type: Boolean,
     required: true,
   },
 });
