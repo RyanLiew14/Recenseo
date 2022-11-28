@@ -1,4 +1,6 @@
 import express from "express";
+import loggedIn from "../middleware/userAuth.js";
+
 import {
   createUser,
   deleteUser,
@@ -9,8 +11,8 @@ import {
 const userRoute = express.Router();
 
 userRoute.post("/", createUser);
-userRoute.get("/:id", getUser);
-userRoute.put("/:id", updateUser);
-userRoute.delete("/:id", deleteUser);
+userRoute.get("/", getUser);
+userRoute.put("/", loggedIn, updateUser);
+userRoute.delete("/", loggedIn, deleteUser);
 
 export default userRoute;
