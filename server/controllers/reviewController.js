@@ -97,12 +97,11 @@ const updateReview = asyncHandler(async (req, res) => {
   try {
     //console.log(req.params);
     const reviewId = mongoose.Types.ObjectId(req.params.id);
-    const updatedReview = await Review.findByIdAndUpdate(reviewId, req.body, {
-      new: true,
-    });
-    if (!updatedReview) {
+    const existingReview = await Review.findById(reviewId);
+
+    if (!existingReview) {
       res.status(400);
-      throw new Error("Review requested for update was not found.");
+      throw new Error("Review with id" + req.params.id + " was not found.");
     }
     if (existingReview.reviewCreatedBy !== req.body.reviewCreatedBy) {
       res.status(400);
@@ -113,7 +112,9 @@ const updateReview = asyncHandler(async (req, res) => {
           req.body.reviewCreatedBy
       );
     }
-
+    const updatedReview = await Review.findByIdAndUpdate(reviewId, req.body, {
+      new: true,
+    });
     res.status(200).json({ updatedReview });
   } catch (error) {
     const errMessage = error.message;
