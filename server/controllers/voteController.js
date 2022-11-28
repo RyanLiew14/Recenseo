@@ -1,5 +1,5 @@
 import asyncHandler from "express-async-handler";
-import Vote from "../models/VoteModel.js";
+import Vote from "../models/voteModel.js";
 import mongoose from "mongoose";
 
 const createVote = asyncHandler(async (req, res) => {
