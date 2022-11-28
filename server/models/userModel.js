@@ -27,6 +27,10 @@ const userSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  userIsReported: {
+    type: Boolean,
+    required: true,
+  },
 });
 
 export default mongoose.model("User", userSchema);

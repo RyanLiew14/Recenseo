@@ -2,16 +2,20 @@ import mongoose from "mongoose";
 
 const reviewSchema = mongoose.Schema({
   reviewCreatedBy: {
-    // Created by a user
+    // Username for the user that created the review
     type: String,
     required: true,
   },
   reviewCreatedFor: {
-    // Created for a course
-    type: String,
+    // Created for a course (using ObjectId)
+    type: mongoose.Schema.Types.ObjectId,
     required: true,
   },
   reviewDifficulty: {
+    type: Number, // between 1 and 5
+    required: true,
+  },
+  reviewRating: {
     type: Number,
     required: true,
   },
@@ -32,7 +36,7 @@ const reviewSchema = mongoose.Schema({
   },
   reviewIsReported: {
     // If the review has been reported by someone, flag the review on the UI
-    type: String,
+    type: Boolean,
     required: true,
   },
   reviewIsDeleted: {

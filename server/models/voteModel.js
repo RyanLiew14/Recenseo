@@ -2,13 +2,13 @@ import mongoose from "mongoose";
 
 const voteSchema = mongoose.Schema({
   voteCreatedFor: {
-    // The review which this vote was created for
-    type: String,
+    // The review which this vote was created for (using ObjectId)
+    type: mongoose.Schema.Types.ObjectId,
     required: true,
   },
   voteCreatedBy: {
-    // The person who voted
-    type: Number,
+    // The person who voted (username)
+    type: String,
     required: true,
   },
   voteType: {
