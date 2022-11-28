@@ -7,8 +7,8 @@ const reviewSchema = mongoose.Schema({
     required: true,
   },
   reviewCreatedFor: {
-    // Created for a course (using ObjectId)
-    type: mongoose.Schema.Types.ObjectId,
+    // Created for a course (using ObjectId in string format)
+    type: String,
     required: true,
   },
   reviewDifficulty: {
@@ -21,7 +21,7 @@ const reviewSchema = mongoose.Schema({
   },
   reviewInfoTags: {
     // JSON of info tags as a string []
-    type: [String],
+    type: String,
     required: true,
   },
   reviewComment: {

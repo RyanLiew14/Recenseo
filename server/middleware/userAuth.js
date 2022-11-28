@@ -8,7 +8,7 @@ const loggedIn = async (req, res, next) => {
     //console.log(req.headers.authorization);
     if (req.headers.authorization) {
       const userToken = req.headers.authorization.split(" ")[1]; //String in format bearer userToken
-      console.log(userToken);
+      //console.log(userToken);
       if (userToken) {
         const payload = await jwt.verify(userToken, process.env.SECRET);
         if (payload) {

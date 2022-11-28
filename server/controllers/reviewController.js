@@ -1,67 +1,130 @@
 import asyncHandler from "express-async-handler";
 import Review from "../models/reviewModel.js";
+import mongoose from "mongoose";
 
 const createReview = asyncHandler(async (req, res) => {
-  const newReview = await Review.create({
-    reviewCreatedFor: req.body.reviewCreatedFor,
-    reviewCreatedBy: req.body.reviewCreatedBy,
-    reviewDifficulty: req.body.reviewDifficulty,
-    reviewInfoTags: req.body.reviewInfoTags,
-    reviewComment: req.body.reviewComment,
-    reviewProfessor: req.body.reviewProfessor,
-    reviewIsReported: req.body.reviewIsReported,
-    reviewIsDeleted: req.body.reviewIsDeleted,
-  });
-  const cookieSettings = {
-    maxAge: 7 * 24 * 60 * 60 * 1000, // Cookie expires in 7 days
-    secure: true,
-    httpOnly: false,
-    sameSite: "lax",
-  };
-  //res.cookie("reviewName", req.body.ReviewName, cookieSettings); cookie implementation example
-  res.status(200).json(newReview);
+  try {
+    const newReview = await Review.create({
+      reviewCreatedFor: req.body.reviewCreatedFor,
+      reviewCreatedBy: req.body.reviewCreatedBy,
+      reviewDifficulty: Number(req.body.reviewDifficulty),
+      reviewRating: Number(req.body.reviewRating),
+      reviewInfoTags: req.body.reviewInfoTags,
+      reviewComment: req.body.reviewComment,
+      reviewProfessor: req.body.reviewProfessor,
+      reviewIsReported: Boolean(req.body.reviewIsReported),
+      reviewIsDeleted: Boolean(req.body.reviewIsDeleted),
+    });
+    const cookieSettings = {
+      maxAge: 7 * 24 * 60 * 60 * 1000, // Cookie expires in 7 days
+      secure: true,
+      httpOnly: false,
+      sameSite: "lax",
+    };
+    //res.cookie("reviewName", req.body.ReviewName, cookieSettings); cookie implementation example
+    res.status(200).json(newReview);
+  } catch (error) {
+    const errMessage = error.message;
+    res.status(400).json(errMessage);
+  }
 });
 
 const deleteReview = asyncHandler(async (req, res) => {
-  const existingReview = await Review.findById(req.params.id);
-  if (!existingReview) {
-    res.status(400);
-    throw new Error("Review not found.");
+  try {
+    //console.log(req.params);
+    const reviewId = mongoose.Types.ObjectId(req.params.id);
+    const existingReview = await Review.findById(reviewId);
+    if (!existingReview) {
+      res.status(400);
+      throw new Error("Review not found.");
+    }
+    if (existingReview.reviewCreatedBy !== req.body.reviewCreatedBy) {
+      res.status(400);
+      throw new Error(
+        "The review with id " +
+          req.params.id +
+          " was not created by the user with username " +
+          req.body.reviewCreatedBy
+      );
+    }
+    await existingReview.remove();
+    res
+      .status(200)
+      .json({ message: "Removed review with id " + req.params.id });
+  } catch (error) {
+    const errMessage = error.message;
+    res.status(400).json(errMessage);
   }
-  await existingReview.remove();
-  res.status(200).json({ id: req.params.id });
 });
 
-const getReview = asyncHandler(async (req, res) => {
-  //console.log(JSON.stringify(req.params));
-  //if (!req.body.reviewReference) {
-  // res.status(400);
-  //throw new Error("Review Reference not included in request body.");
-  // }
-  const review = await Review.findOne({
-    reviewReference: req.params.reviewReference,
-  });
-  if (!review) {
-    res.status(400);
-    throw new Error("Review not found.");
+const getReviewByUser = asyncHandler(async (req, res) => {
+  try {
+    const existingReviews = await Review.find({
+      reviewCreatedBy: req.params.userName,
+    });
+    if (!existingReviews) {
+      res.status(400);
+      throw new Error(
+        'Reviews for user "' + req.params.userName + '" not found.'
+      );
+    }
+    res.status(200).json({ existingReviews });
+  } catch (error) {
+    const errMessage = error.message;
+    res.status(400).json(errMessage);
   }
-  res.status(200).json({ review });
+});
+
+const getReviewByCourse = asyncHandler(async (req, res) => {
+  try {
+    const existingReviews = await Review.find({
+      reviewCreatedFor: req.params.courseName,
+    });
+    if (!existingReviews) {
+      res.status(400);
+      throw new Error(
+        'Reviews for course "' + req.params.courseName + '" not found.'
+      );
+    }
+    res.status(200).json({ existingReviews });
+  } catch (error) {
+    const errMessage = error.message;
+    res.status(400).json(errMessage);
+  }
 });
 
 const updateReview = asyncHandler(async (req, res) => {
-  const review = await Review.findById(req.params.id);
-  if (!review) {
-    res.status(400);
-    throw new Error("Review not found.");
-  }
-  const updatedReview = await Review.findByIdAndUpdate(
-    req.params.id,
-    req.body,
-    {
+  try {
+    //console.log(req.params);
+    const reviewId = mongoose.Types.ObjectId(req.params.id);
+    const updatedReview = await Review.findByIdAndUpdate(reviewId, req.body, {
       new: true,
+    });
+    if (!updatedReview) {
+      res.status(400);
+      throw new Error("Review requested for update was not found.");
     }
-  );
-  res.status(200).json({ updatedReview });
+    if (existingReview.reviewCreatedBy !== req.body.reviewCreatedBy) {
+      res.status(400);
+      throw new Error(
+        "The review with id " +
+          req.params.id +
+          " was not created by the user with username " +
+          req.body.reviewCreatedBy
+      );
+    }
+
+    res.status(200).json({ updatedReview });
+  } catch (error) {
+    const errMessage = error.message;
+    res.status(400).json(errMessage);
+  }
 });
 
-export { createReview, deleteReview, getReview, updateReview };
+export {
+  createReview,
+  deleteReview,
+  getReviewByUser,
+  updateReview,
+  getReviewByCourse,
+};

@@ -10,9 +10,9 @@ import {
 
 const userRoute = express.Router();
 
-userRoute.post("/", createUser);
-userRoute.get("/", getUser);
-userRoute.put("/", loggedIn, updateUser);
-userRoute.delete("/", loggedIn, deleteUser);
+userRoute.post("/signup", createUser);
+userRoute.post("/login", getUser);
+userRoute.put("/updateaccount", loggedIn, updateUser);
+userRoute.delete("/deleteaccount", loggedIn, deleteUser);
 
 export default userRoute;

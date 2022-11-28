@@ -100,7 +100,7 @@ const getUser = asyncHandler(async (req, res) => {
       throw new Error("User " + req.body.userName + " not found.");
     }
   } catch (error) {
-    console.log(error);
+    //console.log(error);
     const errMessage = error.message;
     res.status(400).json({ error: errMessage });
   }
@@ -109,12 +109,12 @@ const getUser = asyncHandler(async (req, res) => {
 
 const updateUser = asyncHandler(async (req, res) => {
   try {
-    const user = await User.findOne(req.body.userName);
+    const user = await User.findOne({ userName: req.body.userName });
     if (!user) {
       res.status(400);
       throw new Error("User " + req.body.userName + " not found.");
     }
-    const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, {
+    const updatedUser = await User.findByIdAndUpdate(user._id, req.body, {
       new: true,
     });
     res.status(200).json({ updatedUser });
