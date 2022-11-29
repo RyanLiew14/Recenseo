@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import CourseSearchBox from "../CourseSearchBox";
 import { UserCircleIcon } from "@heroicons/react/24/outline";
+import CardComponent from "../cardComponent/reviewCard";
+import ReviewCard from "../cardComponent/reviewCard";
 
 function ProfilePage() {
   //instead we'll probably need to hit the courses api and pass the courses as a state to the CourseSearchBox component.
@@ -186,7 +188,7 @@ function ProfilePage() {
         <div className="flex justify-center">
           {/** PROBABLY THE CARD COMPONENT FOR RATINGS HERE */}
           <div className="text-left flex flex-col mt-12 space-y-4">
-            CARD COMPONENT RATINGS
+            <ReviewCard></ReviewCard>
           </div>
         </div>
       )}
