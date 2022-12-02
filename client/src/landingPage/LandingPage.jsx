@@ -2,15 +2,14 @@ import smallRecenseo from "./Small recenseo.svg";
 import bigRecenseo from "./Big Recenseo.svg";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import "./App.css";
-import CourseSearchBox from "./CourseSearchBox";
+import CourseSearchBox from "../CourseSearchBox";
 import {
   CheckCircleIcon,
   EyeSlashIcon,
   UserGroupIcon,
 } from "@heroicons/react/24/outline";
 
-function App() {
+function LandingPage() {
   //instead we'll probably need to hit the courses api and pass the courses as a state to the CourseSearchBox component.
   const baseURL = "http://localhost:5001/api/v1/users";
   const [data, setData] = useState(null);
@@ -81,4 +80,4 @@ function App() {
     </div>
   );
 }
-export default App;
+export default LandingPage;
