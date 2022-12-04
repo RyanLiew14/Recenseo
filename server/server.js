@@ -10,7 +10,7 @@ import cookieParser from "cookie-parser";
 import asyncHandler from "express-async-handler";
 import cookie from "cookie";
 
-dotenv.config();
+dotenv.config({ path: "../.env" });
 
 connectMongoDB();
 

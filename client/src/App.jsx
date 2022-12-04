@@ -15,45 +15,72 @@ import {
 
 function App() {
   //instead we'll probably need to hit the courses api and pass the courses as a state to the CourseSearchBox component.
-  const baseURL = "http://localhost:5001/api/v1/users";
+  const baseURL = "http://localhost:5001/api/users";
   const [data, setData] = useState(null);
   const [signUp, setSignUp] = useState(false);
   const [signIn, setSignIn] = useState(false);
   const [createReview, setCreateReview] = useState(false);
 
-  const toggleForm =(formName) => {
+  const toggleForm = (formName) => {
     if (formName === "login") {
-        setSignIn(true);
-        setSignUp(false);
+      setSignIn(true);
+      setSignUp(false);
     } else if (formName === "register") {
-        setSignIn(false);
-        setSignUp(true);
+      setSignIn(false);
+      setSignUp(true);
     } else {
-        setSignIn(false);
-        setSignUp(false); 
+      setSignIn(false);
+      setSignUp(false);
     }
-  }
+  };
 
   useEffect(() => {
-    axios.get(baseURL).then((response) => setData(response.data));
+    //axios.get(baseURL).then((response) => setData(response.data));
   }, []);
 
   return (
     <div className="flex justify-center text-center flex-col font-mono">
-      {(signUp || signIn || createReview) && <div className="relative z-50">
+      {(signUp || signIn || createReview) && (
+        <div className="relative z-50">
           <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
-        {signIn && <SignInPopup onClick={() => { setSignIn(!signIn); }} onFormSwitch={toggleForm} />}
-        {signUp && <SignUpPopup onClick={() => { setSignUp(!signUp); }} onFormSwitch={toggleForm} />}
-      </div>}
-      
+          {signIn && (
+            <SignInPopup
+              onClick={() => {
+                setSignIn(!signIn);
+              }}
+              onFormSwitch={toggleForm}
+            />
+          )}
+          {signUp && (
+            <SignUpPopup
+              onClick={() => {
+                setSignUp(!signUp);
+              }}
+              onFormSwitch={toggleForm}
+            />
+          )}
+        </div>
+      )}
+
       <div className="flex flex-row font-mono py-2">
         <div className="w-full">
           <img className="ml-4" src={smallRecenseo}></img>
         </div>
         <div className="flex w-full justify-end items-center">
           <div className="flex flex-row gap-3 mr-4">
-            <button onClick={() => { setSignIn(!signIn)}}>Login</button>
-            <button className="bg-red-800 rounded-lg p-1 text-yellow-300" onClick={() => { setSignUp(!signUp)}}>
+            <button
+              onClick={() => {
+                setSignIn(!signIn);
+              }}
+            >
+              Login
+            </button>
+            <button
+              className="bg-red-800 rounded-lg p-1 text-yellow-300"
+              onClick={() => {
+                setSignUp(!signUp);
+              }}
+            >
               Sign up
             </button>
           </div>

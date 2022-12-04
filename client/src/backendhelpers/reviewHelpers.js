@@ -1,9 +1,6 @@
 import axios from "axios";
-import dotenv from "dotenv";
 
-dotenv.config();
-const port = process.env.PORT || 5000;
-const endpointBase = "http://localhost:" + port + "/api/reviews/";
+const enpointBase = "http://localhost:5001/api/reviews/";
 
 /* reqBody is the request body required to sign a user up
 

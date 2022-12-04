@@ -1,9 +1,6 @@
 import axios from "axios";
-import dotenv from "dotenv";
 
-dotenv.config();
-const port = process.env.PORT || 5000;
-const endpointBase = "http://localhost:" + port + "/api/";
+const endpointBase = "http://localhost:5001/api/";
 
 // A cookie is automatically set when a user signs in (The authentication token or userToken is stored as a cookie which expires in a week, this will be used for persistence in the frontend)
 
