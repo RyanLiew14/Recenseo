@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Combobox } from "@headlessui/react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
+import { Link } from "react-router-dom";
 
 const CourseSearchBox = (courses) => {
   const [selectedCourse, setSelectedCourse] = useState("");
@@ -27,7 +28,7 @@ const CourseSearchBox = (courses) => {
         <Combobox.Options className="bg-white hover:bg-red-500">
           {filteredCourses.map((course) => (
             <Combobox.Option key={course} value={course}>
-              {course}
+              <Link to={`courses/${course}`}>{course}</Link>
             </Combobox.Option>
           ))}
         </Combobox.Options>
