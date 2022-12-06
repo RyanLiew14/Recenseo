@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const enpointBase = "http://localhost:5001/api/reviews/";
+const endpointBase = "http://localhost:5001/api/reviews/";
 
 /* reqBody is the request body required to sign a user up
 
@@ -60,11 +60,12 @@ export const getReviewByUser = async (userName, next, userToken) => {
    This API call will get the reviews of a signed in user and return a JSON of all the reviews from the query
    */
 export const getReviewByCourse = async (courseName, next, userToken) => {
-  const headers = {
-    Authorization: "bearer " + userToken,
-  };
-  await axios
-    .get(endpointBase + "getcoursereview/" + courseName, { headers: headers })
+  // WE'LL ADD THIS BACK LATER
+  // const headers = {
+  //   Authorization: "bearer " + userToken,
+  // };
+  return await axios
+    .get(endpointBase + "getcoursereview/" + courseName) //{ headers: headers })
     .then(next);
 };
 
@@ -115,7 +116,7 @@ reqBody is a JSON of the following format:
 
  This API call will update a review using the username and authentication token.
  */
-export const updateReview = async (reviewId, reqBody, userToken) => {
+export const updateReview = async (reviewId, reqBody, next, userToken) => {
   const headers = {
     Authorization: "bearer " + userToken,
   };

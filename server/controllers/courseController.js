@@ -35,7 +35,24 @@ const deleteCourse = asyncHandler(async (req, res) => {
 const getCourse = asyncHandler(async (req, res) => {
   try {
     const existingCourses = await Course.find({})
-    console.log(existingCourses)
+    if (!existingCourses) {
+      res.status(400);
+      throw new Error("No courses were found.");
+    }
+    res.status(200).json({ existingCourses });
+  } catch (error) {
+    const errMessage = error.message;
+    res.status(400).json(errMessage);
+  }
+});
+
+const getSpecificCourse = asyncHandler(async (req, res) => {
+  
+  try {
+    const courseAcronoym = req.params.id.split(' ')[0]
+    const courseNumber = req.params.id.split(' ')[1]
+
+    const existingCourses = await Course.find({courseDepartmentAcronoym: courseAcronoym, courseName: {$regex: courseNumber}})
     if (!existingCourses) {
       res.status(400);
       throw new Error("No courses were found.");
@@ -69,4 +86,4 @@ const getCourse = asyncHandler(async (req, res) => {
   }
 });*/
 
-export { getCourse };
+export { getCourse,getSpecificCourse };
