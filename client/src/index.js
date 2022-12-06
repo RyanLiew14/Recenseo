@@ -6,6 +6,7 @@ import reportWebVitals from "./reportWebVitals";
 import LandingPage from "./landingPage/LandingPage";
 import ProfilePage from "./profilePage/profilePage";
 import CourseRatePage from "./courseRatePage/courseRatePage";
+import BrowsePage from "./browsePage/BrowsePage";
 
 // const router = createBrowserRouter([
 //   {
@@ -26,6 +27,7 @@ root.render(
         <Route path = "/" element = {<LandingPage/>}/>
         <Route path = "/profile" element = {<ProfilePage/>}/>
         <Route path = "/courses/:id" element = {<CourseRatePage/>}/>
+        <Route path = "/browse" element = {<BrowsePage/>}/>
       </Routes>
     </Router>
   </React.StrictMode>
