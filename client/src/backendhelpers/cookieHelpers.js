@@ -7,7 +7,7 @@ const endpointBase = "http://localhost:5001/api/";
 // Call upon start of the application to retrieve any existing userAuth/userToken cookie
 
 export const getUserCookie = async (next) => {
-  await axios
+  return await axios
     .get(endpointBase + "getUserCookie", {
       withCredentials: true,
       credentials: "include",

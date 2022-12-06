@@ -3,7 +3,6 @@ import { Combobox } from "@headlessui/react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 
 const CourseSearchBox = (courses) => {
-  console.log(courses);
   const [selectedCourse, setSelectedCourse] = useState("");
   const [query, setQuery] = useState("");
 

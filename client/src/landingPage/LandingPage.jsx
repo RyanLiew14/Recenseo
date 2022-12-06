@@ -16,6 +16,7 @@ import { getUserCookie } from "../backendhelpers/cookieHelpers";
 
 function LandingPage() {
   const [data, setData] = useState([]);
+  const [cookieData, setCookieData] = useState();
   const [signUp, setSignUp] = useState(false);
   const [signIn, setSignIn] = useState(false);
   const [createReview, setCreateReview] = useState(false);
@@ -44,10 +45,11 @@ function LandingPage() {
         )
       )
     );
-  }, [setData]);
 
-  console.log(data);
-  console.log(getUserCookie().then((cookie) => console.log(cookie)));
+    getUserCookie().then((cookie) => setCookieData(cookie));
+  }, [setData, setCookieData]);
+
+  console.log(cookieData);
   return (
     <div className="flex justify-center text-center flex-col font-mono">
       {(signUp || signIn || createReview) && (
