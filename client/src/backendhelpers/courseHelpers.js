@@ -8,5 +8,6 @@ const endpointBase = "http://localhost:5001/api/courses/";
    This API call will get all of the courses in the backend and return a JSON
    */
 export const getCourse = async (next) => {
-  await axios.get(endpointBase + "getcourse").then(next);
+  return await axios.get(endpointBase + "getcourse").then(next);
+
 };

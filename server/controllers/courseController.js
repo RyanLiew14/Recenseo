@@ -34,7 +34,8 @@ const deleteCourse = asyncHandler(async (req, res) => {
 
 const getCourse = asyncHandler(async (req, res) => {
   try {
-    const existingCourses = await Course.find({});
+    const existingCourses = await Course.find({})
+    console.log(existingCourses)
     if (!existingCourses) {
       res.status(400);
       throw new Error("No courses were found.");

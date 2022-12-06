@@ -2,9 +2,9 @@ import smallRecenseo from "./Small recenseo.svg";
 import bigRecenseo from "./Big Recenseo.svg";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import CourseSearchBox from "./CourseSearchBox";
-import SignUpPopup from "./modals/SignUpPopup";
-import SignInPopup from "./modals/SignIn";
+import CourseSearchBox from "../CourseSearchBox";
+import SignUpPopup from "../modals/SignUpPopup";
+import SignInPopup from "../modals/SignIn";
 
 import {
   CheckCircleIcon,
@@ -12,11 +12,10 @@ import {
   UserGroupIcon,
 } from "@heroicons/react/24/outline";
 import { getCourse } from "../backendhelpers/courseHelpers";
+import { getUserCookie } from "../backendhelpers/cookieHelpers";
 
 function LandingPage() {
-  //instead we'll probably need to hit the courses api and pass the courses as a state to the CourseSearchBox component.
-  const baseURL = "http://localhost:5001/api/users";
-  const [data, setData] = useState(null);
+  const [data, setData] = useState([]);
   const [signUp, setSignUp] = useState(false);
   const [signIn, setSignIn] = useState(false);
   const [createReview, setCreateReview] = useState(false);
@@ -34,8 +33,21 @@ function LandingPage() {
     }
   };
 
-  console.log(getCourse());
+  useEffect(() => {
+    getCourse().then((course) =>
+      setData(
+        course.data.existingCourses.map(
+          (course) =>
+            course.courseDepartmentAcronym +
+            " " +
+            course.courseName.match(/\d+/g)
+        )
+      )
+    );
+  }, [setData]);
 
+  console.log(data);
+  console.log(getUserCookie().then((cookie) => console.log(cookie)));
   return (
     <div className="flex justify-center text-center flex-col font-mono">
       {(signUp || signIn || createReview) && (
@@ -90,7 +102,7 @@ function LandingPage() {
         <p className="mt-12 font-bold font-mono">
           Find a course at the University of Calgary
         </p>
-        <CourseSearchBox />
+        <CourseSearchBox courses={data} />
       </div>
 
       <div className="mt-8 flex flex-col">

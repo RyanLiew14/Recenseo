@@ -2,22 +2,20 @@ import { useState } from "react";
 import { Combobox } from "@headlessui/react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 
-//replace this will database
-const courses = ["SENG513", "GLIZZY303", "ALEJO123"];
-
-const CourseSearchBox = () => {
+const CourseSearchBox = (courses) => {
+  console.log(courses);
   const [selectedCourse, setSelectedCourse] = useState("");
   const [query, setQuery] = useState("");
 
   const filteredCourses =
     query === ""
-      ? courses
-      : courses.filter((course) => {
+      ? [""]
+      : courses.courses.filter((course) => {
           return course.toLowerCase().includes(query.toLowerCase());
         });
 
   return (
-    <div className="flex flex-row items-center">
+    <div className="flex flex-row">
       <MagnifyingGlassIcon className="h-6 w-6 mr-2"></MagnifyingGlassIcon>
       <Combobox
         className="border-black border-2"
@@ -27,7 +25,7 @@ const CourseSearchBox = () => {
       >
         <Combobox.Input onChange={(event) => setQuery(event.target.value)} />
 
-        <Combobox.Options>
+        <Combobox.Options className="bg-white hover:bg-red-500">
           {filteredCourses.map((course) => (
             <Combobox.Option key={course} value={course}>
               {course}
