@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { signUpUser } from "../backendhelpers/userHelpers"; // error
+import { signUpUser } from "../backendhelpers/userHelpers";
 
 const SignUpPopup = (props) => {
   const [username, setUserName] = useState("");
@@ -23,12 +23,18 @@ const SignUpPopup = (props) => {
         userPassword: pass,
         userFirstName: firstName,
         userLastName: lastName,
+        userType: "Basic",
         userIsReported: false,
+        userLoggedIn: false
       });
-      console.log(data);
       signUpUser(data);
     }
   };
+
+  // TO-DO: close form with successful sign up and change page to have name show up in corner
+  // props.onFormSwitch("");
+
+
 
   return (
     <div className="fixed inset-0 z-10 overflow-y-auto">

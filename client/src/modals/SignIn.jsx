@@ -1,21 +1,22 @@
 import React, { useState } from "react";
-//import { logInUser } from "../backendhelpers/userHelpers";    // error
+import { logInUser } from "../backendhelpers/userHelpers";    // error
 
 const SignInPopup = (props) => {
-  const [email, setEmail] = useState("");
+  const [username, setUserName] = useState("");
   const [pass, setPass] = useState("");
-  const [signUp, setSignUp] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     const data = JSON.stringify({
-      userEmail: email,
+      userName: username,
       userPassword: pass.toString(),
     });
-    console.log(data);
-    //logInUser(data);
+    const res = logInUser(data);
   };
+
+  // TO-DO: close form with successful log in
+  // props.onFormSwitch("");
 
   return (
     <div className="fixed inset-0 z-10 overflow-y-auto">
@@ -40,12 +41,12 @@ const SignInPopup = (props) => {
                 <div class="input-group mb-3">
                   <input
                     className="width-10 block w-full appearance-none rounded border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 sm:text-sm"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    type="email"
-                    placeholder="Email"
-                    id="email"
-                    name="email"
+                    value={username}
+                    onChange={(e) => setUserName(e.target.value)}
+                    type="name"
+                    placeholder="Username"
+                    id="username"
+                    name="username"
                   />
                 </div>
                 <div>
