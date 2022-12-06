@@ -2,16 +2,20 @@ import smallRecenseo from "./Small recenseo.svg";
 import bigRecenseo from "./Big Recenseo.svg";
 import { useState, useEffect } from "react";
 import axios from "axios";
+<<<<<<< HEAD:client/src/landingPage/LandingPage.jsx
+import CourseSearchBox from "../CourseSearchBox";
+=======
+import "./App.css";
 import CourseSearchBox from "./CourseSearchBox";
 import SignUpPopup from "./modals/SignUpPopup";
 import SignInPopup from "./modals/SignIn";
 
+>>>>>>> origin/login-signup:client/src/App.jsx
 import {
   CheckCircleIcon,
   EyeSlashIcon,
   UserGroupIcon,
 } from "@heroicons/react/24/outline";
-import { getCourse } from "../backendhelpers/courseHelpers";
 
 function LandingPage() {
   //instead we'll probably need to hit the courses api and pass the courses as a state to the CourseSearchBox component.
@@ -34,7 +38,9 @@ function LandingPage() {
     }
   };
 
-  console.log(getCourse());
+  useEffect(() => {
+    //axios.get(baseURL).then((response) => setData(response.data));
+  }, []);
 
   return (
     <div className="flex justify-center text-center flex-col font-mono">
