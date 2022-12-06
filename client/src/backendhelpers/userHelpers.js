@@ -21,9 +21,31 @@ reqBody is a JSON of the following format:
  This API call will create a user and return a json of the newly created user on success.
  */
 
-export const signUpUser = async (reqBody, next) => {
-  await axios.post(endpointBase + "signup", reqBody).then(next);
+const customConfig = {
+  headers: {
+  'Content-Type': 'application/json'
+  }
+}
+
+export const signUpUser = async (reqBody) => {
+  await axios.post(endpointBase + "signup", reqBody, customConfig)
+  .then(function(response) {
+    if (response.status == 200) {
+      // TO-DO: update field for userLoggedIn: true (?)
+      alert("Signed up successfully!");
+    }
+  })
+  .catch(function (error) {
+    if (error.response){
+      alert(error.response.data.error);
+    }else if(error.request){
+      alert(error.request.data);
+    }else if(error.message){
+      alert(error.message.data);
+    }
+  });
 };
+
 
 /* reqBody is the request body required to log in a user
 
@@ -39,14 +61,29 @@ reqBody is a JSON of the following format:
  This API call will sign a user in and return a token which is used to authenticate the user for any future requests
  such as creating reviews.
  */
-export const logInUser = async (reqBody, next) => {
-  await axios
-    .post(endpointBase + "login", reqBody, {
+var userLoggedIn = false;
+
+export const logInUser = async (reqBody) => {
+  await axios.post(endpointBase + "login", reqBody, customConfig, {
       withCredentials: true,
       credentials: "include",
     })
-    .then(next);
+  .then(function(response) {
+    if (response.status == 200) {
+      // TO-DO: update bool in App to indicate user logged in 
+      alert("Logged in successfully!");
+    }
+  }).catch(function (error) {
+    if (error.response){
+        alert(error.response.data.error);
+      }else if(error.request){
+        alert(error.request.data);
+      }else if(error.message){
+        alert(error.message.data);
+      }
+  });
 };
+
 
 /* reqBody is the request body with the username of the account to delete
 
