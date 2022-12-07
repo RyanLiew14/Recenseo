@@ -5,6 +5,7 @@ import axios from "axios";
 import CourseSearchBox from "../CourseSearchBox";
 import SignUpPopup from "../modals/SignUpPopup";
 import SignInPopup from "../modals/SignIn";
+import CourseCard from "./courseCard";
 
 import {
   CheckCircleIcon,
@@ -135,7 +136,7 @@ function BrowsePage() {
       <div className="flex flex-col m-10  justify-center border border-neutral-400">
 
         {/* column names */}
-        <div className="flex flex-row w-full justify-evenly my-2">
+        <div className="flex flex-row w-full justify-evenly my-2 text-lg font-semibold">
           <p className="flex-col">Code</p>
           <p className="flex-col">Name</p>
           <p className="flex-col">Rating</p>
@@ -144,8 +145,13 @@ function BrowsePage() {
         </div>
 
         <hr className="flex-row mx-10"></hr>
-        {/* TODO: Add course cards */}
-        
+
+        {/* COURSE CARDS | PLACE HOLDER FOR NOW, NEED BACKEND CONNECTION */}
+        <div className="flex-row items-center m-5">
+          <CourseCard></CourseCard>
+        </div>
+
+
       </div>
 
       {/* TODO: fix footer position when page is filled up later */}
