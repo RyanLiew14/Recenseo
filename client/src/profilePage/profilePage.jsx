@@ -6,6 +6,7 @@ import CourseSearchBox from "../CourseSearchBox";
 import { UserCircleIcon } from "@heroicons/react/24/outline";
 import CardComponent from "../cardComponent/reviewCard";
 import ReviewCard from "../cardComponent/reviewCard";
+import { Link } from "react-router-dom";
 
 function ProfilePage() {
   //instead we'll probably need to hit the courses api and pass the courses as a state to the CourseSearchBox component.
@@ -30,9 +31,17 @@ function ProfilePage() {
   return (
     <div className="flex justify-center text-center flex-col font-mono">
       <div className="flex flex-row bg-red-900 h-12">
-        <div className="w-full flex text-white items-center justify-start">
-          <img className="h-12 w-12 mr-4" src={smallRecenseo}></img>
+        <div className="flex text-white items-center">
+          <img className="mx-2 h-12 w-12" src={smallRecenseo}></img>
+          <div className="m-auto text-2xl hover:bg-red-800 rounded-lg">
+            <Link to="/" className="p-5">Home</Link>
+          </div>
+          <div className="m-auto text-2xl hover:bg-red-800 rounded-lg">
+            <Link to="/browse" className="p-5">Browse</Link>
+          </div>
         </div>
+
+
         <div className="w-full flex text-white items-center justify-end mr-4">
           <UserCircleIcon className="h-12 w-12 mr-4"></UserCircleIcon>
           <p> Placeholder</p>

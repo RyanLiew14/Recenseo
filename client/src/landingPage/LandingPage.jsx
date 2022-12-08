@@ -13,6 +13,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { getCourse } from "../backendhelpers/courseHelpers";
 import { getUserCookie } from "../backendhelpers/cookieHelpers";
+import { Link } from "react-router-dom";
 
 function LandingPage() {
   const [data, setData] = useState([]);
@@ -75,8 +76,14 @@ function LandingPage() {
       )}
 
       <div className="flex flex-row font-mono py-2">
-        <div className="w-full">
+        <div className="shrink-0">
           <img className="ml-4" src={smallRecenseo}></img>
+        </div>
+        <div className="m-auto text-2xl ml-10 hover:bg-neutral-200 h-10 leading-10 rounded-lg">
+          <Link to="/" className="p-5">Home</Link>
+        </div>
+        <div className="m-auto text-2xl ml-10 hover:bg-neutral-200 h-10 leading-10 rounded-lg">
+          <Link to="/browse" className="p-5">Browse</Link>
         </div>
         <div className="flex w-full justify-end items-center">
           <div className="flex flex-row gap-3 mr-4">

@@ -6,6 +6,9 @@ import CourseSearchBox from "../CourseSearchBox";
 import SignUpPopup from "../modals/SignUpPopup";
 import SignInPopup from "../modals/SignIn";
 import CourseCard from "./courseCard";
+import SortBox from "./SortBox";
+import FacultyBox from "./FacultyBox";
+import LevelBox from "./LevelBox";
 
 import {
   CheckCircleIcon,
@@ -14,6 +17,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { getCourse } from "../backendhelpers/courseHelpers";
 import { getUserCookie } from "../backendhelpers/cookieHelpers";
+import { Link } from "react-router-dom"
 
 
 function BrowsePage() {
@@ -77,16 +81,26 @@ function BrowsePage() {
       )}
 
       {/* Header */}
-      <div className="flex flex-row font-mono py-2">
-        <div className="w-full">
-          <img className="ml-4" src={smallRecenseo}></img>
+      <div className="flex flex-row font-mono py-2 justify-between items-center">
+        <div className="flex flex-row">
+          <Link to="/" className="flex-col">
+            <img className="ml-4" src={smallRecenseo}></img>
+          </Link>
+          <div className="m-auto text-2xl ml-10 hover:bg-neutral-200 h-10 leading-10 rounded-lg">
+            <Link to="/" className="p-5">Home</Link>
+          </div>
+          <div className="m-auto text-2xl ml-10 hover:bg-neutral-200 h-10 leading-10 rounded-lg">
+            <Link to="/browse" className="p-5">Browse</Link>
+          </div>
         </div>
 
-        <div className="flex w-4/6 justify-center">
-                <img src={bigRecenseo}></img>
+        <div className="w-96 absolute ml-auto mr-auto left-0 right-0">
+          <Link to="/">
+          <img src={bigRecenseo}></img>
+          </Link>
         </div>
 
-        <div className="flex w-full justify-end items-center">
+        <div className="flex flex-col">
           <div className="flex flex-row gap-3 mr-4">
             <button
               onClick={() => {
@@ -106,7 +120,8 @@ function BrowsePage() {
           </div>
         </div>
       </div>
-      
+      <hr className="mt-3 mx-10 h-1 bg-black"></hr>
+
       {/* Desc */}
       <div className="flex-row">
         <p className="text-2xl font-bold mt-10">
@@ -116,21 +131,20 @@ function BrowsePage() {
 
       {/* Search and filter*/}
       {/* Department and Level search have placeholders for now */}
-      <div className="flex flex-row mx-10 mt-8 justify-center">
-        <div className="flex-col h-full">
-          <CourseSearchBox courses={data} />
+      <div className="flex flex-row mx-10 mt-8 justify-between">
+        <div className="flex flex-row h-full">
+          <CourseSearchBox courses={data} className="flex-col"/>
+          <FacultyBox className="flex-col"/>
+          <LevelBox className="flex-col"/>
         </div>
         
         <div className="flex-col">
-          <CourseSearchBox courses={data} />
+          <SortBox />
         </div>
 
-        <div className="flex-col">
-          <CourseSearchBox courses={data} />
-        </div>
       </div>
       
-      <hr className="mt-8 mx-10 h-1 bg-neutral-400"></hr>
+      <hr className="mt-3 mx-10 h-1 bg-neutral-400"></hr>
 
       {/* Course list */}
       <div className="flex flex-col m-10  justify-center border border-neutral-400">
@@ -147,7 +161,7 @@ function BrowsePage() {
         <hr className="flex-row mx-10"></hr>
 
         {/* COURSE CARDS | PLACE HOLDER FOR NOW, NEED BACKEND CONNECTION */}
-        <div className="flex-row items-center m-5">
+        <div className="flex-row m-5">
           <CourseCard></CourseCard>
         </div>
 
