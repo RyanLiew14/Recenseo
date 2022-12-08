@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { logInUser } from "../backendhelpers/userHelpers";    // error
+import { logInUser } from "../backendhelpers/userHelpers"; // error
 
 const SignInPopup = (props) => {
   const [username, setUserName] = useState("");
@@ -38,7 +38,7 @@ const SignInPopup = (props) => {
               </h2>
 
               <form className="login-form" onSubmit={handleSubmit}>
-                <div class="input-group mb-3">
+                <div className="input-group mb-3">
                   <input
                     className="width-10 block w-full appearance-none rounded border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 sm:text-sm"
                     value={username}
@@ -50,7 +50,7 @@ const SignInPopup = (props) => {
                   />
                 </div>
                 <div>
-                  <div class="input-group mb-3">
+                  <div className="input-group mb-3">
                     <input
                       className="block w-full appearance-none rounded  border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 sm:text-sm"
                       value={pass}
