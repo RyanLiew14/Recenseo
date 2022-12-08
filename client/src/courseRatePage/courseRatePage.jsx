@@ -12,12 +12,24 @@ import { useParams } from "react-router-dom";
 import { getCourse } from "../backendhelpers/courseHelpers";
 import { getSpecificCourse } from "../backendhelpers/courseHelpers";
 import { getReviewByCourse } from "../backendhelpers/reviewHelpers";
+import ReviewCard from "../cardComponent/reviewCard";
+import AddReview from "../modals/addReviewModal";
 
 function CourseRatePage() {
   const [selectedCourse, setSelectedCourse] = useState();
   const [allCourses, setAllCourses] = useState();
   const [reviews, setReviews] = useState();
+  const [averageScore, setAverageScore] = useState();
+  const [addReview, setAddReview] = useState(false);
   const { id } = useParams();
+
+  const getAverageScore = () => {
+    let score = 0;
+    if (reviews) {
+      reviews.map((review) => (score += review.reviewRating));
+      setAverageScore(score / reviews.length);
+    }
+  };
 
   useEffect(() => {
     getSpecificCourse(id).then((course) =>
@@ -36,13 +48,13 @@ function CourseRatePage() {
     getReviewByCourse(id).then((review) =>
       setReviews(review.data.existingReviews)
     );
-  }, [setSelectedCourse, setAllCourses, setReviews]);
 
-  console.log(selectedCourse);
-  console.log(reviews);
-  console.log(allCourses);
+    getAverageScore();
+  }, [setSelectedCourse, setAllCourses, setReviews, setAverageScore, reviews]);
+
   return (
     <div className="flex justify-center text-center flex-col font-mono">
+      {addReview && <AddReview courseName={id} />}
       <div className="flex flex-row font-mono py-2 items-center">
         <div className="w-full">
           <img className="ml-4" src={smallRecenseo}></img>
@@ -61,7 +73,36 @@ function CourseRatePage() {
         </div>
       </div>
 
-      <footer className="flex flex-row bg-red-900 h-12 mt-8">
+      <div className="flex text-center justify-center">
+        <span className="text-7xl font-bold flex flex-row text-center">
+          {averageScore}/<p className="text-4xl">5</p>
+        </span>
+      </div>
+
+      <div className="text-4xl font-bold">{id}</div>
+
+      <div className="w-full flex justify-center mt-4">
+        <button
+          onClick={() => setAddReview(true)}
+          className="w-32 bg-red-800 text-yellow-300 rounded-md"
+        >
+          Add review
+        </button>
+      </div>
+
+      <div className="flex flex-row justify-center w-full mt-4">
+        {reviews?.map((review) => (
+          <ReviewCard
+            courseTags={review.reviewInfoTags}
+            courseRating={review.reviewRating}
+            courseDifficulty={review.reviewDifficulty}
+            courseComment={review.reviewComment}
+            courseName={id}
+          />
+        ))}
+      </div>
+
+      <footer className="flex flex-row bg-red-900 h-12 mt-8 w-full fixed bottom-0">
         <div className="w-full flex text-white items-center justify-start">
           <p className="ml-4">
             © 2022 Seng 513 - Group 7 Inc. All Rights Reserved
