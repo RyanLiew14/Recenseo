@@ -19,6 +19,5 @@ const customConfig = {
 }
 
 export const getSpecificCourse = async(courseId, next)=> {
-  console.log(courseId)
   return await axios.get(endpointBase + "getspecificcourse" + `/${courseId}`).then(next)
 }
