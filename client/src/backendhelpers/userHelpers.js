@@ -22,30 +22,32 @@ reqBody is a JSON of the following format:
  */
 
 const customConfig = {
+  withCredentials: true,
+  credentials: "include",
   headers: {
-  'Content-Type': 'application/json'
-  }
-}
-
-export const signUpUser = async (reqBody) => {
-  await axios.post(endpointBase + "signup", reqBody, customConfig)
-  .then(function(response) {
-    if (response.status == 200) {
-      // TO-DO: update field for userLoggedIn: true (?)
-      alert("Signed up successfully!");
-    }
-  })
-  .catch(function (error) {
-    if (error.response){
-      alert(error.response.data.error);
-    }else if(error.request){
-      alert(error.request.data);
-    }else if(error.message){
-      alert(error.message.data);
-    }
-  });
+    "Content-Type": "application/json",
+  },
 };
 
+export const signUpUser = async (reqBody) => {
+  await axios
+    .post(endpointBase + "signup", reqBody, customConfig)
+    .then(function (response) {
+      if (response.status == 200) {
+        // TO-DO: update field for userLoggedIn: true (?)
+        alert("Signed up successfully!");
+      }
+    })
+    .catch(function (error) {
+      if (error.response) {
+        alert(error.response.data.error);
+      } else if (error.request) {
+        alert(error.request.data);
+      } else if (error.message) {
+        alert(error.message.data);
+      }
+    });
+};
 
 /* reqBody is the request body required to log in a user
 
@@ -64,26 +66,27 @@ reqBody is a JSON of the following format:
 var userLoggedIn = false;
 
 export const logInUser = async (reqBody) => {
-  await axios.post(endpointBase + "login", reqBody, customConfig, {
+  await axios
+    .post(endpointBase + "login", reqBody, customConfig, {
       withCredentials: true,
       credentials: "include",
     })
-  .then(function(response) {
-    if (response.status == 200) {
-      // TO-DO: update bool in App to indicate user logged in 
-      alert("Logged in successfully!");
-    }
-  }).catch(function (error) {
-    if (error.response){
+    .then(function (response) {
+      if (response.status == 200) {
+        // TO-DO: update bool in App to indicate user logged in
+        alert("Logged in successfully!");
+      }
+    })
+    .catch(function (error) {
+      if (error.response) {
         alert(error.response.data.error);
-      }else if(error.request){
+      } else if (error.request) {
         alert(error.request.data);
-      }else if(error.message){
+      } else if (error.message) {
         alert(error.message.data);
       }
-  });
+    });
 };
-
 
 /* reqBody is the request body with the username of the account to delete
 
