@@ -1,4 +1,5 @@
 import axios from "axios";
+import { setUserLoggedIn, setName } from "../App.jsx";
 
 const endpointBase = "http://localhost:5001/api/users/";
 
@@ -27,12 +28,13 @@ const customConfig = {
   }
 }
 
-export const signUpUser = async (reqBody) => {
+export const signUpUser = async (reqBody, props) => {
   await axios.post(endpointBase + "signup", reqBody, customConfig)
   .then(function(response) {
-    if (response.status == 200) {
-      // TO-DO: update field for userLoggedIn: true (?)
-      alert("Signed up successfully!");
+    if (response.status === 200) {
+      setUserLoggedIn(true);
+      props.onFormSwitch("");
+      //alert("Signed up successfully!");
     }
   })
   .catch(function (error) {
@@ -61,17 +63,20 @@ reqBody is a JSON of the following format:
  This API call will sign a user in and return a token which is used to authenticate the user for any future requests
  such as creating reviews.
  */
-var userLoggedIn = false;
 
-export const logInUser = async (reqBody) => {
+export const logInUser = async (reqBody, props) => {
   await axios.post(endpointBase + "login", reqBody, customConfig, {
       withCredentials: true,
       credentials: "include",
     })
   .then(function(response) {
-    if (response.status == 200) {
-      // TO-DO: update bool in App to indicate user logged in 
-      alert("Logged in successfully!");
+    if (response.status === 200) {
+      setUserLoggedIn(true);
+      let data = JSON.parse(reqBody);
+      console.log(reqBody);
+      setName(data.userName);
+      //alert("Logged in successfully!");
+      props.onFormSwitch("");
     }
   }).catch(function (error) {
     if (error.response){
