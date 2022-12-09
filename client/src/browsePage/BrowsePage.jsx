@@ -26,6 +26,7 @@ function BrowsePage() {
   const [signUp, setSignUp] = useState(false);
   const [signIn, setSignIn] = useState(false);
   const [createReview, setCreateReview] = useState(false);
+  const [allCourses, setAllCourses] = useState();
 
   const toggleForm = (formName) => {
     if (formName === "login") {
@@ -51,8 +52,18 @@ function BrowsePage() {
         )
       )
     );
+    getCourse().then((course) =>
+      setAllCourses(
+        course.data.existingCourses.map((course => {
+          return course;
+        }))
+      )
+    );
     getUserCookie().then((cookie) => setCookieData(cookie));
   }, [setData, setCookieData]);
+
+  // List of filtered courses that appears on the list
+
 
   return (
     <div className="flex justify-center text-center flex-col font-mono">
@@ -150,20 +161,29 @@ function BrowsePage() {
       <div className="flex flex-col m-10  justify-center border border-neutral-400">
 
         {/* column names */}
-        <div className="flex flex-row w-full justify-evenly my-2 text-lg font-semibold">
-          <p className="flex-col">Code</p>
-          <p className="flex-col">Name</p>
-          <p className="flex-col">Rating</p>
-          <p className="flex-col">Difficulty</p>
-          <p className="flex-col">Total Reviews</p>
+        <div className="flex flex-row w-full my-2 text-lg font-semibold">
+          <p className="flex-col basis-1/5">Code</p>
+          <p className="flex-col basis-1/5">Name</p>
+          <p className="flex-col basis-1/5">Rating</p>
+          <p className="flex-col basis-1/5">Difficulty</p>
+          <p className="flex-col basis-1/5">Total Reviews</p>
         </div>
 
         <hr className="flex-row mx-10"></hr>
 
-        {/* COURSE CARDS | PLACE HOLDER FOR NOW, NEED BACKEND CONNECTION */}
-        <div className="flex-row m-5">
-          <CourseCard></CourseCard>
-        </div>
+        {/* LIST OF COURSES - Formatted as clickable course cards */}
+        {/* TODO: Add filter/sort functions */}
+        
+        {allCourses?.map((course) => (
+          <div className="flex-row m-5">
+            <CourseCard
+              courseCode={course.courseDepartmentAcronym+" "+course.courseName.match(/\d+/g)}
+              courseName={course.courseNameLong}
+            />
+          </div>
+        ))}
+        
+
 
 
       </div>

@@ -11,6 +11,7 @@ import LogoutPopup from "../modals/LogoutPopup";
 import Dropdown from "../dropdownmenu/Dropdown";
 import profileFill from "../svg/person-fill.svg";
 import downArrow from "../svg/chevron-down.svg";
+import { Link } from "react-router-dom";
 
 import {
   CheckCircleIcon,
@@ -32,7 +33,6 @@ let username = "";
 export const setName = function (name) {
   username = name;
 };
-import { Link } from "react-router-dom";
 
 function LandingPage() {
   const [signUp, setSignUp] = useState(false);
