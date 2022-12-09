@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 
 dotenv.config();
 const port = process.env.PORT || 5000;
-const endpointBase = "http://localhost:" + port + "/api/votes/";
+const endpointBase = "http://localhost:5001/api/votes/";
 
 /* reqBody is the request body required to create a vote
 

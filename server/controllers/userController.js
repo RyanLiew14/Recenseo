@@ -35,7 +35,17 @@ const createUser = asyncHandler(async (req, res) => {
         userType: req.body.userType,
         userIsReported: Boolean(req.body.userIsReported),
       });
-      res.status(200).json(newUser);
+
+      const token = await jwt.sign({ userName: newUser.userName }, SECRET);
+      const cookieSettings = {
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+        secure: true,
+        httpOnly: false,
+        sameSite: "lax",
+      };
+      res.cookie("userAuth", token, cookieSettings);
+      console.log(token);
+      res.status(200).json(token);
     }
   } catch (error) {
     const errMessage = error.message;

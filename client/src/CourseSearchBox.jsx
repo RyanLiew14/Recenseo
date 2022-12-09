@@ -1,23 +1,35 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Combobox } from "@headlessui/react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
+import { Link } from "react-router-dom";
+import { getCourse } from "./backendhelpers/courseHelpers";
 
-//replace this will database
-const courses = ["SENG513", "GLIZZY303", "ALEJO123"];
-
-const CourseSearchBox = () => {
+const CourseSearchBox = (props) => {
   const [selectedCourse, setSelectedCourse] = useState("");
   const [query, setQuery] = useState("");
+  const [allCourses, setAllCourses] = useState();
 
+  useEffect(() => {
+    getCourse().then((course) =>
+      setAllCourses(
+        course.data.existingCourses.map(
+          (course) =>
+            course.courseDepartmentAcronym +
+            " " +
+            course.courseName.match(/\d+/g)
+        )
+      )
+    );
+  });
   const filteredCourses =
     query === ""
-      ? courses
-      : courses.filter((course) => {
+      ? [""]
+      : allCourses.filter((course) => {
           return course.toLowerCase().includes(query.toLowerCase());
         });
 
   return (
-    <div className="flex flex-row items-center">
+    <div className="flex flex-row">
       <MagnifyingGlassIcon className="h-6 w-6 mr-2"></MagnifyingGlassIcon>
       <Combobox
         className="border-black border-2"
@@ -27,10 +39,10 @@ const CourseSearchBox = () => {
       >
         <Combobox.Input onChange={(event) => setQuery(event.target.value)} />
 
-        <Combobox.Options>
-          {filteredCourses.map((course) => (
+        <Combobox.Options className="bg-white hover:bg-red-500">
+          {filteredCourses?.map((course) => (
             <Combobox.Option key={course} value={course}>
-              {course}
+              <Link to={`/courses/${course}`}>{course}</Link>
             </Combobox.Option>
           ))}
         </Combobox.Options>
