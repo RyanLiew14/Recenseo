@@ -21,7 +21,7 @@ const AddReview = (props) => {
   const [authToken, setAuthToken] = useState("");
 
   useEffect(() => {
-    getUserCookie().then((cookie) => setAuthToken(cookie.data.userAuth));
+    getUserCookie().then((cookie) => console.log(cookie.data));
   }, [setAuthToken]);
 
   const handleSubmit = (e) => {

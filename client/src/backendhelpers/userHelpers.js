@@ -51,7 +51,7 @@ export const signUpUser = async (reqBody, props) => {
     });
 };
 
-export const getUser = async (userName, userToken) => {
+export const getUser = async (userName, userToken, next) => {
   const headers = {
     Authorization: "bearer " + userToken,
   };
