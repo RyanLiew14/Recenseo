@@ -14,6 +14,7 @@ import { getSpecificCourse } from "../backendhelpers/courseHelpers";
 import { getReviewByCourse } from "../backendhelpers/reviewHelpers";
 import ReviewCard from "../cardComponent/reviewCard";
 import AddReview from "../modals/addReviewModal";
+import { getUserCookie } from "../backendhelpers/cookieHelpers";
 
 function CourseRatePage() {
   const [selectedCourse, setSelectedCourse] = useState();
@@ -21,6 +22,7 @@ function CourseRatePage() {
   const [reviews, setReviews] = useState();
   const [averageScore, setAverageScore] = useState();
   const [addReview, setAddReview] = useState(false);
+  const [cookieData, setCookieData] = useState();
   const { id } = useParams();
 
   useEffect(() => {
@@ -46,6 +48,7 @@ function CourseRatePage() {
       reviews.map((review) => (score += review.reviewRating));
       setAverageScore(score / reviews.length);
     }
+    getUserCookie().then((cookie)=> setCookieData(cookie))
   }, [
     setSelectedCourse,
     setAllCourses,
@@ -54,6 +57,8 @@ function CourseRatePage() {
     reviews,
     id,
   ]);
+
+  console.log(cookieData)
 
   return (
     <div className="flex justify-center text-center flex-col font-mono">
