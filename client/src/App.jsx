@@ -2,7 +2,6 @@ import smallRecenseo from "./Small recenseo.svg";
 import bigRecenseo from "./Big Recenseo.svg";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import Collapsible from 'react-collapsible';  // delete
 import "./App.css";
 import CourseSearchBox from "./CourseSearchBox";
 import SignUpPopup from "./modals/SignUpPopup";

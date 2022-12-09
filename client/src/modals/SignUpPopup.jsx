@@ -25,7 +25,7 @@ const SignUpPopup = (props) => {
         userLastName: lastName,
         userType: "Basic",
         userIsReported: false,
-        userLoggedIn: false
+        userLoggedIn: false,
       });
       signUpUser(data, props);
     }
@@ -33,8 +33,6 @@ const SignUpPopup = (props) => {
 
   // TO-DO: close form with successful sign up and change page to have name show up in corner
   // props.onFormSwitch("");
-
-
 
   return (
     <div className="fixed inset-0 z-10 overflow-y-auto">
@@ -57,7 +55,7 @@ const SignUpPopup = (props) => {
                     name="user-name"
                   />
                 </div>
-                <div class="input-group mb-3 flex-column">
+                <div className="input-group mb-3 flex-column">
                   <input
                     className="width-10 block w-full appearance-none rounded border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 sm:text-sm"
                     value={firstName}
@@ -68,7 +66,7 @@ const SignUpPopup = (props) => {
                     name="first-name"
                   />
                 </div>
-                <div class="input-group mb-3 flex-column">
+                <div className="input-group mb-3 flex-column">
                   <input
                     className="width-10 block w-full appearance-none rounded border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 sm:text-sm"
                     value={lastName}
@@ -79,7 +77,7 @@ const SignUpPopup = (props) => {
                     name="last-name"
                   />
                 </div>
-                <div class="input-group mb-3">
+                <div className="input-group mb-3">
                   <input
                     className="width-10 block w-full appearance-none rounded border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 sm:text-sm"
                     value={email}
@@ -90,7 +88,7 @@ const SignUpPopup = (props) => {
                     name="email"
                   />
                 </div>
-                <div class="input-group mb-3">
+                <div className="input-group mb-3">
                   <input
                     className="width-10 block w-full appearance-none rounded border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 sm:text-sm"
                     value={pass}
@@ -102,7 +100,7 @@ const SignUpPopup = (props) => {
                   />
                 </div>
                 <div>
-                  <div class="input-group mb-3">
+                  <div className="input-group mb-3">
                     <input
                       className="block w-full appearance-none rounded  border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 sm:text-sm"
                       value={confirmPass}
