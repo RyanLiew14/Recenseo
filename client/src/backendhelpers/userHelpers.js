@@ -1,5 +1,5 @@
 import axios from "axios";
-import { setUserLoggedIn, setName } from "../App.jsx";
+import { setUserLoggedIn, setName } from "../landingPage/LandingPage.jsx";
 
 const endpointBase = "http://localhost:5001/api/users/";
 
