@@ -21,7 +21,7 @@ const reviewSchema = mongoose.Schema({
   },
   reviewInfoTags: {
     // JSON of info tags as a string []
-    type: String,
+    type: [String],
     required: true,
   },
   reviewComment: {

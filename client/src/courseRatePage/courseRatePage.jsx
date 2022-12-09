@@ -14,6 +14,7 @@ import { getSpecificCourse } from "../backendhelpers/courseHelpers";
 import { getReviewByCourse } from "../backendhelpers/reviewHelpers";
 import ReviewCard from "../cardComponent/reviewCard";
 import AddReview from "../modals/addReviewModal";
+import { getUserCookie } from "../backendhelpers/cookieHelpers";
 
 function CourseRatePage() {
   const [selectedCourse, setSelectedCourse] = useState();
@@ -21,15 +22,8 @@ function CourseRatePage() {
   const [reviews, setReviews] = useState();
   const [averageScore, setAverageScore] = useState();
   const [addReview, setAddReview] = useState(false);
+  const [cookieData, setCookieData] = useState();
   const { id } = useParams();
-
-  const getAverageScore = () => {
-    let score = 0;
-    if (reviews) {
-      reviews.map((review) => (score += review.reviewRating));
-      setAverageScore(score / reviews.length);
-    }
-  };
 
   useEffect(() => {
     getSpecificCourse(id).then((course) =>
@@ -49,18 +43,32 @@ function CourseRatePage() {
       setReviews(review.data.existingReviews)
     );
 
-    getAverageScore();
-  }, [setSelectedCourse, setAllCourses, setReviews, setAverageScore, reviews]);
+    let score = 0;
+    if (reviews?.length > 0) {
+      reviews.map((review) => (score += review.reviewRating));
+      setAverageScore(score / reviews.length);
+    }
+    getUserCookie().then((cookie)=> setCookieData(cookie))
+  }, [
+    setSelectedCourse,
+    setAllCourses,
+    setReviews,
+    setAverageScore,
+    reviews,
+    id,
+  ]);
+
+  console.log(cookieData)
 
   return (
     <div className="flex justify-center text-center flex-col font-mono">
-      {addReview && <AddReview courseName={id} />}
+      {addReview && <AddReview courseName={id} setAddReview={setAddReview} />}
       <div className="flex flex-row font-mono py-2 items-center">
         <div className="w-full">
           <img className="ml-4" src={smallRecenseo}></img>
         </div>
         <div className="h-8">
-          <CourseSearchBox />
+          <CourseSearchBox courses={allCourses} />
         </div>
 
         <div className="flex w-full justify-end items-center">
@@ -74,9 +82,15 @@ function CourseRatePage() {
       </div>
 
       <div className="flex text-center justify-center">
-        <span className="text-7xl font-bold flex flex-row text-center">
-          {averageScore}/<p className="text-4xl">5</p>
-        </span>
+        {reviews?.length > 0 ? (
+          <span className="text-7xl font-bold flex flex-row text-center">
+            {averageScore}/<p className="text-4xl">5</p>
+          </span>
+        ) : (
+          <p className="text-2xl font-bold flex flex-row text-center mb-12">
+            No reviews exist!
+          </p>
+        )}
       </div>
 
       <div className="text-4xl font-bold">{id}</div>

@@ -12,11 +12,6 @@ export const getCourse = async (next) => {
 
 };
 
-const customConfig = {
-  headers: {
-  'Content-Type': 'application/json'
-  }
-}
 
 export const getSpecificCourse = async(courseId, next)=> {
   return await axios.get(endpointBase + "getspecificcourse" + `/${courseId}`).then(next)

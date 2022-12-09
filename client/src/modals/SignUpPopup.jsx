@@ -8,7 +8,7 @@ const SignUpPopup = (props) => {
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
   const [confirmPass, setConfirmPass] = useState("");
-  const [signUp, setSignUp] = useState(false);
+  // const [signUp, setSignUp] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -27,7 +27,7 @@ const SignUpPopup = (props) => {
         userIsReported: false,
         userLoggedIn: false,
       });
-      signUpUser(data);
+      signUpUser(data, props);
     }
   };
 

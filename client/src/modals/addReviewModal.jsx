@@ -19,6 +19,7 @@ const AddReview = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    props.setAddReview(false);
     const infoTags = [];
     console.log(rating);
     console.log(difficulty);
