@@ -10,7 +10,6 @@ import AddReview from "../modals/addReviewModal";
 function CourseRatePage() {
   const [allCourses, setAllCourses] = useState();
   const [reviews, setReviews] = useState();
-  // const [averageScore, setAverageScore] = useState();
   const [addReview, setAddReview] = useState(false);
   const { id } = useParams();
 

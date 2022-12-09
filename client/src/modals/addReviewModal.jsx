@@ -19,11 +19,16 @@ const AddReview = (props) => {
   const [difficulty, setDifficulty] = useState(1);
   const [selectedTags, setSelectedTags] = useState();
   const [authToken, setAuthToken] = useState("");
+  const [userName, setUserName] = useState("");
+  const [professor, setProfessor] = useState("");
 
   useEffect(() => {
-    getUserCookie().then((cookie) => setAuthToken(cookie.data.userAuth));
-    getUser().then((user) => console.log(user.data));
-  }, [setAuthToken]);
+    getUserCookie().then((cookie) => {
+      console.log(cookie);
+      // setAuthToken(cookie.data.userAuth);
+      // setUserName(cookie.data.userName);
+    });
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -37,24 +42,22 @@ const AddReview = (props) => {
 
     const data = {
       reviewCreatedFor: props.courseName,
-      reviewCreatedBy: "asd",
+      reviewCreatedBy: userName,
       reviewDifficulty: difficulty,
       reviewRating: rating,
       reviewInfoTags: infoTags,
       reviewComment: comment,
-      reviewProfessor: "asd",
+      reviewProfessor: professor,
       reviewIsReported: false,
       reviewIsDeleted: false,
     };
 
     console.log(data);
     console.log(authToken);
+    console.log(userName);
 
     createReview(data, authToken);
   };
-
-  // TO-DO: close form with successful log in
-  // props.onFormSwitch("");
 
   return (
     <div className="fixed inset-0 z-10 overflow-y-auto">
@@ -102,6 +105,18 @@ const AddReview = (props) => {
                     <option value={4}>4</option>
                     <option value={5}>5</option>
                   </select>
+                </div>
+
+                <div class="input-group mb-3">
+                  <input
+                    className="mt-4 h-10 block w-full appearance-none rounded border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 sm:text-sm"
+                    value={professor}
+                    onChange={(e) => setProfessor(e.target.value)}
+                    type="name"
+                    placeholder="professor"
+                    id="comment"
+                    name="comment"
+                  />
                 </div>
 
                 <div class="input-group mb-3">
