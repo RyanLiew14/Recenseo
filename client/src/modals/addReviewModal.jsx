@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { logInUser } from "../backendhelpers/userHelpers"; // error
+import { getUser, logInUser } from "../backendhelpers/userHelpers"; // error
 import Select from "react-select";
 import { createReview } from "../backendhelpers/reviewHelpers";
 import { useEffect } from "react";
@@ -21,7 +21,8 @@ const AddReview = (props) => {
   const [authToken, setAuthToken] = useState("");
 
   useEffect(() => {
-    getUserCookie().then((cookie) => console.log(cookie.data));
+    getUserCookie().then((cookie) => setAuthToken(cookie.data.userAuth));
+    getUser().then((user) => console.log(user.data));
   }, [setAuthToken]);
 
   const handleSubmit = (e) => {
@@ -48,6 +49,7 @@ const AddReview = (props) => {
 
     console.log(data);
     console.log(authToken);
+
     createReview(data, authToken);
   };
 
