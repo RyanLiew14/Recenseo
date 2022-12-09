@@ -12,11 +12,8 @@ const SignInPopup = (props) => {
       userName: username,
       userPassword: pass.toString(),
     });
-    const res = logInUser(data);
+    logInUser(data, props);
   };
-
-  // TO-DO: close form with successful log in
-  // props.onFormSwitch("");
 
   return (
     <div className="fixed inset-0 z-10 overflow-y-auto">
