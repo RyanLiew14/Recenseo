@@ -3,9 +3,9 @@ import { useState } from "react";
 
 const LogoutPopup = (props) => {
     const [logoutState, setLogOut] = useState(false);
-
+    
     const handleLogout = function() {
-        setLogOut(true);
+        setLogOut(true);        
         console.log("logging out", logoutState);
     };
 
