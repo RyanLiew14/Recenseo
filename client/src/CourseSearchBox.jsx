@@ -3,14 +3,14 @@ import { Combobox } from "@headlessui/react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import { Link } from "react-router-dom";
 
-const CourseSearchBox = (courses) => {
+const CourseSearchBox = (props) => {
   const [selectedCourse, setSelectedCourse] = useState("");
   const [query, setQuery] = useState("");
 
   const filteredCourses =
     query === ""
       ? [""]
-      : courses.courses.filter((course) => {
+      : props.courses.filter((course) => {
           return course.toLowerCase().includes(query.toLowerCase());
         });
 
@@ -28,7 +28,7 @@ const CourseSearchBox = (courses) => {
         <Combobox.Options className="bg-white hover:bg-red-500">
           {filteredCourses.map((course) => (
             <Combobox.Option key={course} value={course}>
-              <Link to={`courses/${course}`}>{course}</Link>
+              <Link to={`/courses/${course}`}>{course}</Link>
             </Combobox.Option>
           ))}
         </Combobox.Options>
