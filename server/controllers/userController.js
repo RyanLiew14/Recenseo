@@ -44,7 +44,8 @@ const createUser = asyncHandler(async (req, res) => {
         sameSite: "lax",
       };
       res.cookie("userAuth", token, cookieSettings);
-      console.log(token);
+      res.cookie("userName", req.body.userName, cookieSettings);
+      //console.log(token);
       res.status(200).json(token);
     }
   } catch (error) {
@@ -97,6 +98,7 @@ const getUser = asyncHandler(async (req, res) => {
           sameSite: "lax",
         };
         res.cookie("userAuth", token, cookieSettings);
+        res.cookie("userName", req.body.userName, cookieSettings);
         res.status(200).json(token);
       } else {
         res
@@ -132,4 +134,29 @@ const updateUser = asyncHandler(async (req, res) => {
   }
 });
 
-export { createUser, deleteUser, getUser, updateUser };
+const getUserInfo = asyncHandler(async (req, res) => {
+  try {
+    const existingUser = await User.find({
+      userName: req.params.userName,
+    });
+    if (!existingUser) {
+      res.status(400);
+      throw new Error('User "' + req.params.userName + '" not found.');
+    }
+    const userInfo = existingUser[0];
+    //console.log(userInfo);
+    res.status(200).json({
+      userName: userInfo.userName,
+      userEmail: userInfo.userEmail,
+      userFirstName: userInfo.userFirstName,
+      userLastName: userInfo.userLastName,
+      userType: userInfo.userType,
+      userIsReported: userInfo.userIsReported,
+    });
+  } catch (error) {
+    const errMessage = error.message;
+    res.status(400).json(errMessage);
+  }
+});
+
+export { createUser, deleteUser, getUser, updateUser, getUserInfo };
