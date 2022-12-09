@@ -18,7 +18,7 @@ function ReviewCard(props) {
   }, [setTags, props.courseTags]);
 
   return (
-    <div className="flex justify-center w-8/12">
+    <div className="flex justify-center">
       <div className="border-0 bg-gray-200 shadow-lg w-full p-4">
         <div className="text-xl flex flex-row">
           <div className="flex justify-start w-full">

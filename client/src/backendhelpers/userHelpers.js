@@ -23,6 +23,8 @@ reqBody is a JSON of the following format:
  */
 
 const customConfig = {
+  withCredentials: true,
+  credentials: "include",
   headers: {
   'Content-Type': 'application/json'
   }

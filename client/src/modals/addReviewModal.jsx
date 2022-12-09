@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { logInUser } from "../backendhelpers/userHelpers"; // error
 import Select from "react-select";
 import { createReview } from "../backendhelpers/reviewHelpers";
+import { useEffect } from "react";
+import { getUserCookie } from "../backendhelpers/cookieHelpers";
 
 const AddReview = (props) => {
   const tagOptions = [
@@ -16,6 +18,11 @@ const AddReview = (props) => {
   const [rating, setRating] = useState(1);
   const [difficulty, setDifficulty] = useState(1);
   const [selectedTags, setSelectedTags] = useState();
+  const [authToken, setAuthToken] = useState("");
+
+  useEffect(() => {
+    getUserCookie().then((cookie) => setAuthToken(cookie.data.userAuth));
+  }, [setAuthToken]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -40,8 +47,8 @@ const AddReview = (props) => {
     };
 
     console.log(data);
-
-    createReview(data);
+    console.log(authToken);
+    createReview(data, authToken);
   };
 
   // TO-DO: close form with successful log in
