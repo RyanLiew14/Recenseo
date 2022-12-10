@@ -45,16 +45,16 @@ function CourseCard(props) {
                 <p>{props.courseName}</p>
             </div>
             <div className="flex-col basis-1/5">
-                <div className={`${CardColor[Math.round(courseAvgRating)]} text-xl py-2 pl-7 pr-10 w-0 m-auto`}>
+                <div className={`${CardColor[Math.round(courseAvgRating)]} text-xl w-1/5 py-2 m-auto min-w-max`}>
                     {Math.round(courseAvgRating*10)/10}
                 </div>
             </div>
             <div className="flex-col basis-1/5">
-                <div className={`${CardColor[Math.round(courseAvgDifficulty)]} text-xl py-2 pl-7 pr-10 w-0 m-auto`}>
+                <div className={`${CardColor[Math.round(courseAvgDifficulty)]} text-xl w-1/5 py-2 m-auto min-w-max`}>
                     {Math.round(courseAvgDifficulty*10)/10}
                 </div>
             </div>
-            <div className="flex-col basis-1/5">
+            <div className="flex-col basis-1/5 text-xl">
                 <p>{totalReviews}</p>
             </div>
         </div>

@@ -161,7 +161,7 @@ function BrowsePage() {
       <div className="flex flex-col m-10  justify-center border border-neutral-400">
 
         {/* column names */}
-        <div className="flex flex-row w-full my-2 text-lg font-semibold">
+        <div className="flex flex-row my-2 text-lg font-semibold m-14">
           <p className="flex-col basis-1/5">Code</p>
           <p className="flex-col basis-1/5">Name</p>
           <p className="flex-col basis-1/5">Rating</p>
