@@ -9,6 +9,8 @@ import CourseCard from "./courseCard";
 import SortBox from "./SortBox";
 import FacultyBox from "./FacultyBox";
 import LevelBox from "./LevelBox";
+import Select from "react-select";
+import { Combobox } from "@headlessui/react";
 
 import {
   CheckCircleIcon,
@@ -21,12 +23,37 @@ import { Link } from "react-router-dom"
 
 
 function BrowsePage() {
+  const facultyOptions = [
+    { value: "Arts", label: "Arts" },
+    { value: "Science", label: "Science" },
+    { value: "Business", label: "Business" },
+    { value: "Architecture, Planning and Landscape", label: "Architecture" },
+    { value: "Engineering", label: "Engineering" },
+    { value: "Nursing", label: "Nursing" },
+    { value: "Education", label: "Education" },
+  ];
+  const levelOptions = [
+    { value: "200", label: "200" },
+    { value: "300", label: "300" },
+    { value: "400", label: "400" },
+    { value: "500", label: "500" },
+  ];
+  const sortOptions = [
+    { value: "Rating", label: "Rating" },
+    { value: "Difficulty", label: "Difficulty" },
+    { value: "Total Reviews", label: "Total Reviews" },
+  ];
+
   const [data, setData] = useState([]);
   const [cookieData, setCookieData] = useState();
   const [signUp, setSignUp] = useState(false);
   const [signIn, setSignIn] = useState(false);
   const [createReview, setCreateReview] = useState(false);
   const [allCourses, setAllCourses] = useState();
+  const [selectedFaculties, setSelectedFaculties] = useState();
+  const [selectedLevels, setSelectedLevels] = useState();
+  const [selectedSort, setSelectedSort] = useState();
+  // const [filteredCourses, setFilteredCourses] = useState([]);
 
   const toggleForm = (formName) => {
     if (formName === "login") {
@@ -59,11 +86,22 @@ function BrowsePage() {
         }))
       )
     );
+    
+    // Faculty filter
+    // setFilteredCourses(selectedFaculties === "" ? allCourses
+    //   : allCourses.filter((course) => {
+    //     return course.courseFaculty.toLowerCase().includes(selectedFaculties.toLowerCase());
+    //   }));
+
     getUserCookie().then((cookie) => setCookieData(cookie));
-  }, [setData, setCookieData]);
+  });
 
   // List of filtered courses that appears on the list
-
+  // const filteredCourses = 
+  //   selectedFaculties === "" ? allCourses
+  //   : allCourses.filter((course) => {
+  //     return course.courseFaculty.toLowerCase().includes(selectedFaculties.toLowerCase());
+  //   });
 
   return (
     <div className="flex justify-center text-center flex-col font-mono">
@@ -132,7 +170,6 @@ function BrowsePage() {
         </div>
       </div>
       <hr className="mt-3 mx-10 h-1 bg-black"></hr>
-
       {/* Desc */}
       <div className="flex-row">
         <p className="text-2xl font-bold mt-10">
@@ -145,12 +182,37 @@ function BrowsePage() {
       <div className="flex flex-row mx-10 mt-8 justify-between">
         <div className="flex flex-row h-full">
           <CourseSearchBox courses={data} className="flex-col"/>
-          <FacultyBox className="flex-col"/>
-          <LevelBox className="flex-col"/>
+          <label>Faculty:</label>
+          <Select className="flex-col"
+            isMulti
+            name="faculties"
+            options={facultyOptions}
+            value={selectedFaculties}
+            onChange={(e) => {
+                setSelectedFaculties(e);
+            }}
+          />
+          <label>Level:</label>
+          <Select className="flex-col"
+            isMulti
+            name="level"
+            options={levelOptions}
+            value={selectedLevels}
+            onChange={(e) => {
+                setSelectedLevels(e);
+            }}
+          />
         </div>
         
         <div className="flex-col">
-          <SortBox />
+          <Select
+            name="level"
+            options={sortOptions}
+            value={selectedSort}
+            onChange={(e) => {
+                setSelectedSort(e);
+            }}
+          />
         </div>
 
       </div>
@@ -173,7 +235,6 @@ function BrowsePage() {
 
         {/* LIST OF COURSES - Formatted as clickable course cards */}
         {/* TODO: Add filter/sort functions */}
-        
         {allCourses?.map((course) => (
           <div className="flex-row m-5">
             <CourseCard
