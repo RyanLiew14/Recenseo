@@ -6,6 +6,7 @@ import { getCourse } from "../backendhelpers/courseHelpers";
 import { getReviewByCourse } from "../backendhelpers/reviewHelpers";
 import ReviewCard from "../cardComponent/reviewCard";
 import AddReview from "../modals/addReviewModal";
+import { getUserCookie } from "../backendhelpers/cookieHelpers";
 
 function CourseRatePage() {
   const [allCourses, setAllCourses] = useState();
@@ -13,6 +14,7 @@ function CourseRatePage() {
   const [reviewAdded, setReviewAdded] = useState(false);
   const [addReview, setAddReview] = useState(false);
   const { id } = useParams();
+  const [authToken, setAuthToken] = useState(false);
 
   useEffect(() => {
     getCourse().then((course) =>
@@ -25,11 +27,14 @@ function CourseRatePage() {
         )
       )
     );
-    getReviewByCourse(id).then((review) =>
+    getUserCookie().then((cookie) => {
+      setAuthToken(cookie.data.userAuth);
+    });
+    getReviewByCourse(id, authToken).then((review) =>
       setReviews(review.data.existingReviews)
     );
     setReviewAdded(false);
-  }, [id, reviewAdded]);
+  }, [id, reviewAdded, authToken]);
 
   let score = 0;
   let averageScore = 0;
@@ -106,7 +111,7 @@ function CourseRatePage() {
       </div>
 
       <footer className="flex flex-row bg-red-900 h-12 mt-8 w-full fixed bottom-0">
-        <div className="w-full flex text-white items-center justify-start">
+        <div className="w-full flex text-white text=xs items-center justify-start">
           <p className="ml-4">
             © 2022 Seng 513 - Group 7 Inc. All Rights Reserved
           </p>

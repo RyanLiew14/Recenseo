@@ -46,7 +46,7 @@ export const getReviewByUser = async (userName, userToken, next) => {
   const headers = {
     Authorization: "bearer " + userToken,
   };
-  await axios
+  return await axios
     .get(endpointBase + "getuserreview/" + userName, { headers: headers })
     .then(next);
 };
@@ -60,12 +60,11 @@ export const getReviewByUser = async (userName, userToken, next) => {
    This API call will get the reviews of a signed in user and return a JSON of all the reviews from the query
    */
 export const getReviewByCourse = async (courseName, userToken, next) => {
-  // WE'LL ADD THIS BACK LATER
-  // const headers = {
-  //   Authorization: "bearer " + userToken,
-  // };
+  const headers = {
+    Authorization: "bearer " + userToken,
+  };
   return await axios
-    .get(endpointBase + "getcoursereview/" + courseName) //{ headers: headers })
+    .get(endpointBase + "getcoursereview/" + courseName, { headers: headers })
     .then(next);
 };
 
