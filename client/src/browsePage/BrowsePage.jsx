@@ -50,10 +50,10 @@ function BrowsePage() {
   const [signIn, setSignIn] = useState(false);
   const [createReview, setCreateReview] = useState(false);
   const [allCourses, setAllCourses] = useState();
-  const [selectedFaculties, setSelectedFaculties] = useState();
+  const [selectedFaculties, setSelectedFaculties] = useState({value:"", label:"Select"});
   const [selectedLevels, setSelectedLevels] = useState();
   const [selectedSort, setSelectedSort] = useState();
-  // const [filteredCourses, setFilteredCourses] = useState([]);
+  const [filteredCourses, setFilteredCourses] = useState([]);
 
   const toggleForm = (formName) => {
     if (formName === "login") {
@@ -68,7 +68,10 @@ function BrowsePage() {
     }
   };
 
+
   useEffect(() => {
+    // TODO: This is only here because im still using CourseSearchBox.jsx component as a place holder for the text box
+    // remove when a name search text box is implemented
     getCourse().then((course) =>
       setData(
         course.data.existingCourses.map(
@@ -79,6 +82,8 @@ function BrowsePage() {
         )
       )
     );
+
+    // Retrieve all the courses from the database then store it to allCourses
     getCourse().then((course) =>
       setAllCourses(
         course.data.existingCourses.map((course => {
@@ -86,16 +91,18 @@ function BrowsePage() {
         }))
       )
     );
-
-
-    // its saying allCourses is undefined
-    // if (selectedFaculties != "") {
-    //     allCourses.filter((course) => course.courseFaculty === selectedFaculties);
-    // }
+    
+    console.log(allCourses);
+    // Filter allCourses to only include classes with a specific faculty
+    // TODO: maybe re-enable multi select for faculties filter and filter more than one faculty
+    // TODO: Try to filter everything (faculty, level, and sortby) all at once
+    if (selectedFaculties.value != "") {
+      console.log("running with value: " + selectedFaculties.value);
+      setFilteredCourses(allCourses?.filter((course) => course.courseFaculty === selectedFaculties.value));
+    }
 
     getUserCookie().then((cookie) => setCookieData(cookie));
   }, [selectedFaculties, selectedLevels, selectedSort]);
-
   // List of filtered courses that appears on the list
   // const filteredCourses = 
   //   selectedFaculties === "" ? allCourses
@@ -193,7 +200,6 @@ function BrowsePage() {
           />
           <label>Level:</label>
           <Select className="flex-col"
-            isMulti
             name="level"
             options={levelOptions}
             value={selectedLevels}
@@ -234,7 +240,7 @@ function BrowsePage() {
 
         {/* LIST OF COURSES - Formatted as clickable course cards */}
         {/* TODO: Add filter/sort functions */}
-        {allCourses?.map((course) => (
+        {filteredCourses?.map((course) => (
           <div className="flex-row m-5">
             <CourseCard
               courseCode={course.courseDepartmentAcronym+" "+course.courseName.match(/\d+/g)}

@@ -29,8 +29,9 @@ function CourseCard(props) {
 //   const reviews = [];
 //   const totalReviews = 0;
 
+  // empty dependency so useEffect only runs once
+  // ISSUE: getReviewsByCourse returns Promise {<pending>} values, unless useEffect runs infinitely. idk why
   useEffect(() => {
-
     getReviewByCourse(props.courseCode).then(function(result) {
         setReviews(result.data.existingReviews);
         setTotalReviews(result.data.existingReviews.length);
@@ -43,7 +44,7 @@ function CourseCard(props) {
       setCourseAvgRating(score / reviews.length);
       setCourseAvgDifficulty(score1 / reviews.length);
     }
-  });
+  }, []);
 
   return (
     <Link to={`/courses/${props.courseCode}`}>
