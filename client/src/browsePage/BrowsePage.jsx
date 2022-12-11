@@ -86,15 +86,15 @@ function BrowsePage() {
         }))
       )
     );
-    
-    // Faculty filter
-    // setFilteredCourses(selectedFaculties === "" ? allCourses
-    //   : allCourses.filter((course) => {
-    //     return course.courseFaculty.toLowerCase().includes(selectedFaculties.toLowerCase());
-    //   }));
+
+
+    // its saying allCourses is undefined
+    // if (selectedFaculties != "") {
+    //     allCourses.filter((course) => course.courseFaculty === selectedFaculties);
+    // }
 
     getUserCookie().then((cookie) => setCookieData(cookie));
-  });
+  }, [selectedFaculties, selectedLevels, selectedSort]);
 
   // List of filtered courses that appears on the list
   // const filteredCourses = 
@@ -184,7 +184,6 @@ function BrowsePage() {
           <CourseSearchBox courses={data} className="flex-col"/>
           <label>Faculty:</label>
           <Select className="flex-col"
-            isMulti
             name="faculties"
             options={facultyOptions}
             value={selectedFaculties}

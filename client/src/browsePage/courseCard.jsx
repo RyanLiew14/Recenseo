@@ -43,7 +43,7 @@ function CourseCard(props) {
       setCourseAvgRating(score / reviews.length);
       setCourseAvgDifficulty(score1 / reviews.length);
     }
-  }, [reviews]);
+  });
 
   return (
     <Link to={`/courses/${props.courseCode}`}>
