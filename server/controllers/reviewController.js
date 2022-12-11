@@ -23,9 +23,7 @@ const createReview = asyncHandler(async (req, res) => {
 });
 
 const deleteReview = asyncHandler(async (req, res) => {
-  
   try {
-    console.log(req.params);
     const reviewId = mongoose.Types.ObjectId(req.params.id);
     const existingReview = await Review.findById(reviewId);
     if (!existingReview) {
