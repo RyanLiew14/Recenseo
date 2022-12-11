@@ -45,8 +45,6 @@ const EditReview = (props) => {
       reviewIsDeleted: false,
     };
 
-    console.log(reviewId);
-
     updateReview(reviewId, data, authToken);
   };
 

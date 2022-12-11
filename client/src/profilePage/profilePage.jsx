@@ -18,7 +18,6 @@ function ProfilePage() {
   const [reviews, setReviews] = useState();
   const [userType, setUserType] = useState();
   const [editReview, setEditReview] = useState(false);
-  const [reviewId, setReviewId] = useState();
   const [index, setIndex] = useState();
 
   useEffect(() => {
@@ -41,7 +40,7 @@ function ProfilePage() {
         setReviews(review.data.existingReviews);
       });
     }
-  }, [authToken, userName]);
+  }, [authToken, userName, reviews]);
 
   return (
     <div className="flex justify-center text-center flex-col font-mono">
@@ -234,14 +233,7 @@ function ProfilePage() {
                     <button
                       className="hover:underline ml-5"
                       onClick={() => {
-                        console.log(review._id, authToken);
-                        deleteReview(
-                          review._id,
-                          {
-                            reviewCreatedBy: review.reviewCreatedBy,
-                          },
-                          authToken
-                        );
+                        deleteReview(review._id, userName, authToken);
                       }}
                     >
                       Delete

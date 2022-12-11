@@ -84,13 +84,12 @@ reqBody is a JSON of the following format:
 
  This API call will delete a review using the username and authentication token.
  */
-export const deleteReview = async (reviewId, reqBody, userToken, next) => {
-  console.log(reviewId,reqBody,userToken);
+export const deleteReview = async (reviewId, userName, userToken, next) => {
   const headers = {
     Authorization: "bearer " + userToken,
   };
   await axios
-    .delete(endpointBase + reviewId, reqBody, { headers: headers })
+    .delete(endpointBase + reviewId, {headers: headers, data: {reviewCreatedBy: userName}})
     .then(next);
 };
 
