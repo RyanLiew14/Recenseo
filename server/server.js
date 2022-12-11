@@ -31,6 +31,7 @@ app.get(
   asyncHandler(async (req, res) => {
     res.send({
       userAuth: req.cookies.userAuth,
+      userName: req.cookies.userName,
     });
   })
 );
@@ -39,6 +40,7 @@ app.get(
   "/api/deleteUserCookie",
   asyncHandler(async (req, res) => {
     res.clearCookie("userAuth");
+    res.clearCookie("userName");
     res.send("Cookies have been deleted.");
   })
 );

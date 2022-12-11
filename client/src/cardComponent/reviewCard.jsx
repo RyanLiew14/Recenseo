@@ -18,15 +18,17 @@ function ReviewCard(props) {
   }, [setTags, props.courseTags]);
 
   return (
-    <div className="flex justify-center w-8/12">
+    <div className="flex justify-center">
       <div className="border-0 bg-gray-200 shadow-lg w-full p-4">
-        <div className="text-xl flex flex-row">
-          <div className="flex justify-start w-full">
+        <div className="text-xl flex sm:flex-row flex-col">
+          <div className="flex sm:justify-start justify-center w-full">
             <p>{props.courseName}</p>
           </div>
-          <div className="text-sm mr-4 flex justify-end w-full"></div>
+          <div className="text-sm mr-4 flex sm:justify-end justify-center w-full break-all">
+            {props.courseProfessor}
+          </div>
         </div>
-        <div className="flex flex-row ml-4 mt-3">
+        <div className="flex sm:flex-row flex-col ml-4 mt-3">
           <div className="flex flex-col space-y-4">
             <div className="flex flex-col">
               <p>Quality</p>
@@ -51,10 +53,10 @@ function ReviewCard(props) {
             </div>
           </div>
           <div className="flex flex-col w-8/12 text-xs ml-8 mt-4">
-            <p className="text-left">{props.courseComment}</p>
-            <div className="flex flex-row space-x-4 mt-8">
+            <p className="sm:text-left break-all">{props.courseComment}</p>
+            <div className="flex sm:flex-row flex-col sm:space-x-4 space-y-4 mt-8">
               {tags?.map((tag) => (
-                <div className="bg-gray-400 p-0.5">{tag}</div>
+                <div className="bg-gray-400 p-1">{tag}</div>
               ))}
             </div>
           </div>
