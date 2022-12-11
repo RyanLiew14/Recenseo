@@ -1,5 +1,5 @@
 import axios from "axios";
-import { setUserLoggedIn, setName } from "../landingPage/LandingPage.jsx";
+import { setUserLoggedIn, setName } from "../AuthenticationComponents";
 
 const endpointBase = "http://localhost:5001/api/users/";
 
@@ -87,7 +87,7 @@ export const logInUser = async (reqBody, props) => {
         let data = JSON.parse(reqBody);
         console.log(reqBody);
         setName(data.userName);
-        //alert("Logged in successfully!");
+
         props.onFormSwitch("");
       }
     })

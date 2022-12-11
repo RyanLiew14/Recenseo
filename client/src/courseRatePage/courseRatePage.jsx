@@ -7,6 +7,8 @@ import { getReviewByCourse } from "../backendhelpers/reviewHelpers";
 import ReviewCard from "../cardComponent/reviewCard";
 import AddReview from "../modals/addReviewModal";
 import { getUserCookie } from "../backendhelpers/cookieHelpers";
+import AuthenticationComponents from "../AuthenticationComponents";
+import RecenseoLogo from "../RecenseoLogo";
 
 function CourseRatePage() {
   const [allCourses, setAllCourses] = useState();
@@ -53,22 +55,14 @@ function CourseRatePage() {
       )}
       <div className="flex sm:flex-row flex-col font-mono py-2 items-center">
         <div className="flex w-full sm:justify-start justify-center">
-          <img
-            className="sm:ml-4 sm:mb-0 mb-4 h-16 w-16"
-            src={smallRecenseo}
-          ></img>
+          <RecenseoLogo />
         </div>
         <div className="h-8">
           <CourseSearchBox courses={allCourses} />
         </div>
 
         <div className="flex w-full sm:justify-end items-center justify-center sm:mt-0 mt-4">
-          <div className="flex flex-row gap-3 mr-4">
-            <button>Login</button>
-            <button className="bg-red-800 rounded-lg p-1 text-yellow-300">
-              Sign up
-            </button>
-          </div>
+          <AuthenticationComponents />
         </div>
       </div>
 
@@ -117,7 +111,7 @@ function CourseRatePage() {
           </p>
         </div>
         <div className="w-full flex text-white items-center justify-end">
-          <img className="h-12 w-12 mr-4" src={smallRecenseo}></img>
+          <RecenseoLogo />
         </div>
       </footer>
     </div>
