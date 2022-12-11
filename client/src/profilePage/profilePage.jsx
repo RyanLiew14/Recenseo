@@ -1,14 +1,11 @@
 import smallRecenseo from "./Small recenseo.svg";
-import bigRecenseo from "./Big Recenseo.svg";
 import { useState, useEffect } from "react";
-import axios from "axios";
-import CourseSearchBox from "../CourseSearchBox";
 import { UserCircleIcon } from "@heroicons/react/24/outline";
-import CardComponent from "../cardComponent/reviewCard";
 import ReviewCard from "../cardComponent/reviewCard";
 import { getUserCookie } from "../backendhelpers/cookieHelpers";
 import { getUser, updateUser } from "../backendhelpers/userHelpers";
-import { getReviewByUser } from "../backendhelpers/reviewHelpers";
+import { deleteReview, getReviewByUser } from "../backendhelpers/reviewHelpers";
+import EditReview from "../modals/editReview";
 
 function ProfilePage() {
   const [tabState, setTabState] = useState("baseInfo");
@@ -20,6 +17,9 @@ function ProfilePage() {
   const [authToken, setAuthToken] = useState();
   const [reviews, setReviews] = useState();
   const [userType, setUserType] = useState();
+  const [editReview, setEditReview] = useState(false);
+  const [reviewId, setReviewId] = useState();
+  const [index, setIndex] = useState();
 
   useEffect(() => {
     getUserCookie().then((cookie) => {
@@ -193,15 +193,62 @@ function ProfilePage() {
       {tabState === "ratings" && (
         <div className="w-full flex justify-center">
           <div className="flex flex-col w-8/12 mt-4 space-y-4">
-            {reviews?.map((review) => (
-              <ReviewCard
-                courseTags={review.reviewInfoTags}
-                courseRating={review.reviewRating}
-                courseDifficulty={review.reviewDifficulty}
-                courseProfessor={review.reviewProfessor}
-                courseComment={review.reviewComment}
-                courseName={review.reviewCreatedFor}
+            {editReview && (
+              <EditReview
+                courseName={reviews[index].reviewCreatedFor}
+                comment={reviews[index].reviewComment}
+                rating={reviews[index].reviewRating}
+                difficulty={reviews[index].reviewDifficulty}
+                tags={reviews[index].reviewInfoTags}
+                authToken={authToken}
+                userName={userName}
+                professor={reviews[index].reviewProfessor}
+                reviewId={reviews[index]._id}
+                setEditReview={setEditReview}
               />
+            )}
+            {reviews?.map((review, index) => (
+              <div className="flex flex-row">
+                <div className="w-full">
+                  <ReviewCard
+                    courseTags={review.reviewInfoTags}
+                    courseRating={review.reviewRating}
+                    courseDifficulty={review.reviewDifficulty}
+                    courseProfessor={review.reviewProfessor}
+                    courseComment={review.reviewComment}
+                    courseName={review.reviewCreatedFor}
+                  />
+                </div>
+
+                <div className="flex justify-end items-center">
+                  <div className="flex flex-col space-y-4">
+                    <button
+                      className="hover:underline"
+                      onClick={() => {
+                        setEditReview(true);
+                        setIndex(index);
+                      }}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className="hover:underline ml-5"
+                      onClick={() => {
+                        console.log(review._id, authToken);
+                        deleteReview(
+                          review._id,
+                          {
+                            reviewCreatedBy: review.reviewCreatedBy,
+                          },
+                          authToken
+                        );
+                      }}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              </div>
             ))}
           </div>
         </div>

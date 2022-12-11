@@ -84,7 +84,8 @@ reqBody is a JSON of the following format:
 
  This API call will delete a review using the username and authentication token.
  */
-export const deleteReview = async (reviewId, reqBody, next, userToken) => {
+export const deleteReview = async (reviewId, reqBody, userToken, next) => {
+  console.log(reviewId,reqBody,userToken);
   const headers = {
     Authorization: "bearer " + userToken,
   };
@@ -115,7 +116,7 @@ reqBody is a JSON of the following format:
 
  This API call will update a review using the username and authentication token.
  */
-export const updateReview = async (reviewId, reqBody, next, userToken) => {
+export const updateReview = async (reviewId, reqBody, userToken, next) => {
   const headers = {
     Authorization: "bearer " + userToken,
   };
