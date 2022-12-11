@@ -10,6 +10,7 @@ import AddReview from "../modals/addReviewModal";
 function CourseRatePage() {
   const [allCourses, setAllCourses] = useState();
   const [reviews, setReviews] = useState();
+  const [reviewAdded, setReviewAdded] = useState(false);
   const [addReview, setAddReview] = useState(false);
   const { id } = useParams();
 
@@ -27,7 +28,8 @@ function CourseRatePage() {
     getReviewByCourse(id).then((review) =>
       setReviews(review.data.existingReviews)
     );
-  }, [id]);
+    setReviewAdded(false);
+  }, [id, reviewAdded]);
 
   let score = 0;
   let averageScore = 0;
@@ -35,19 +37,27 @@ function CourseRatePage() {
     reviews.forEach((review) => (score += review.reviewRating));
     averageScore = score / reviews.length;
   }
-  console.log("s");
   return (
     <div className="flex justify-center text-center flex-col font-mono">
-      {addReview && <AddReview courseName={id} setAddReview={setAddReview} />}
-      <div className="flex flex-row font-mono py-2 items-center">
-        <div className="w-full">
-          <img className="ml-4" src={smallRecenseo}></img>
+      {addReview && (
+        <AddReview
+          courseName={id}
+          setAddReview={setAddReview}
+          setReviewAdded={setReviewAdded}
+        />
+      )}
+      <div className="flex sm:flex-row flex-col font-mono py-2 items-center">
+        <div className="flex w-full sm:justify-start justify-center">
+          <img
+            className="sm:ml-4 sm:mb-0 mb-4 h-16 w-16"
+            src={smallRecenseo}
+          ></img>
         </div>
         <div className="h-8">
           <CourseSearchBox courses={allCourses} />
         </div>
 
-        <div className="flex w-full justify-end items-center">
+        <div className="flex w-full sm:justify-end items-center justify-center sm:mt-0 mt-4">
           <div className="flex flex-row gap-3 mr-4">
             <button>Login</button>
             <button className="bg-red-800 rounded-lg p-1 text-yellow-300">
@@ -87,6 +97,7 @@ function CourseRatePage() {
               courseTags={review.reviewInfoTags}
               courseRating={review.reviewRating}
               courseDifficulty={review.reviewDifficulty}
+              courseProfessor={review.reviewProfessor}
               courseComment={review.reviewComment}
               courseName={id}
             />

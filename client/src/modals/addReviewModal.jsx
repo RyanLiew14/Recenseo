@@ -17,7 +17,7 @@ const AddReview = (props) => {
   const [comment, setComment] = useState("");
   const [rating, setRating] = useState(1);
   const [difficulty, setDifficulty] = useState(1);
-  const [selectedTags, setSelectedTags] = useState();
+  const [selectedTags, setSelectedTags] = useState([]);
   const [authToken, setAuthToken] = useState("");
   const [userName, setUserName] = useState("");
   const [professor, setProfessor] = useState("");
@@ -33,11 +33,7 @@ const AddReview = (props) => {
     e.preventDefault();
     props.setAddReview(false);
     const infoTags = [];
-    console.log(rating);
-    console.log(difficulty);
     selectedTags.map((tags) => infoTags.push(tags.value));
-
-    console.log(infoTags);
 
     const data = {
       reviewCreatedFor: props.courseName,
@@ -50,6 +46,8 @@ const AddReview = (props) => {
       reviewIsReported: false,
       reviewIsDeleted: false,
     };
+
+    props.setReviewAdded(true);
 
     createReview(data, authToken);
   };

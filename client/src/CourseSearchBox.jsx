@@ -30,13 +30,13 @@ const CourseSearchBox = (props) => {
 
   return (
     <div className="flex flex-row">
-      <MagnifyingGlassIcon className="h-6 w-6 mr-2"></MagnifyingGlassIcon>
       <Combobox
-        className="border-black border-2"
+        className="border-black border-2 flex items-center"
         as="div"
         value={selectedCourse}
         onChange={setSelectedCourse}
       >
+        <MagnifyingGlassIcon className="h-6 w-6" />
         <Combobox.Input onChange={(event) => setQuery(event.target.value)} />
 
         <Combobox.Options className="bg-white hover:bg-red-500">
