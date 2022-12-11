@@ -55,7 +55,7 @@ export const getUser = async (userName, userToken, next) => {
   const headers = {
     Authorization: "bearer " + userToken,
   };
-  await axios
+  return await axios
     .get(endpointBase + "getuser/" + userName, { headers: headers })
     .then(next);
 };
@@ -145,7 +145,7 @@ reqBody is a JSON of the following format:
 
  This API call will update a user account using the username and authentication token.
  */
-export const updateUser = async (reqBody, next, userToken) => {
+export const updateUser = async (reqBody, userToken,  next) => {
   const headers = {
     Authorization: "bearer " + userToken,
   };

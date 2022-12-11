@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { Combobox } from "@headlessui/react";
-import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import { Link } from "react-router-dom";
 import { getCourse } from "./backendhelpers/courseHelpers";
 
@@ -29,14 +28,13 @@ const CourseSearchBox = (props) => {
         });
 
   return (
-    <div className="flex flex-row">
+    <div>
       <Combobox
-        className="border-black border-2 flex items-center"
+        className="border-black border-2"
         as="div"
         value={selectedCourse}
         onChange={setSelectedCourse}
       >
-        <MagnifyingGlassIcon className="h-6 w-6" />
         <Combobox.Input onChange={(event) => setQuery(event.target.value)} />
 
         <Combobox.Options className="bg-white hover:bg-red-500">
