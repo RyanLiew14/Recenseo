@@ -1,64 +1,72 @@
 import smallRecenseo from "./Small recenseo.svg";
-import bigRecenseo from "./Big Recenseo.svg";
 import { useState, useEffect } from "react";
-import axios from "axios";
-import CourseSearchBox from "../CourseSearchBox";
 import { UserCircleIcon } from "@heroicons/react/24/outline";
-import CardComponent from "../cardComponent/reviewCard";
 import ReviewCard from "../cardComponent/reviewCard";
-import { Link } from "react-router-dom";
+import { getUserCookie } from "../backendhelpers/cookieHelpers";
+import { getUser, updateUser } from "../backendhelpers/userHelpers";
+import { deleteReview, getReviewByUser } from "../backendhelpers/reviewHelpers";
+import EditReview from "../modals/editReview";
+import RecenseoLogo from "../RecenseoLogo";
 
 function ProfilePage() {
-  //instead we'll probably need to hit the courses api and pass the courses as a state to the CourseSearchBox component.
-  const baseURL = "http://localhost:5001/api/v1/users";
-  const [data, setData] = useState(null);
   const [tabState, setTabState] = useState("baseInfo");
-  {
-    /*we probably query the db to get this info and put it in the state, and we set the state we probably make an update api call to the user collection*/
-  }
   const [editMode, setEditMode] = useState(false);
-  const [firstName, setFirstName] = useState("Placeholder");
-  const [lastName, setLastName] = useState("Placeholder");
-  const [degree, setDegree] = useState("Placeholder");
-  const [major, setMajor] = useState("Placeholder");
-  const [email, setEmail] = useState("Placeholder");
-  const [password, setPassword] = useState("Placeholder");
+  const [firstName, setFirstName] = useState();
+  const [lastName, setLastName] = useState();
+  const [email, setEmail] = useState();
+  const [userName, setUserName] = useState();
+  const [authToken, setAuthToken] = useState();
+  const [reviews, setReviews] = useState();
+  const [userType, setUserType] = useState();
+  const [editReview, setEditReview] = useState(false);
+  const [index, setIndex] = useState();
 
   useEffect(() => {
-    axios.get(baseURL).then((response) => setData(response.data));
-  }, []);
+    getUserCookie().then((cookie) => {
+      setAuthToken(cookie.data.userAuth);
+      setUserName(cookie.data.userName);
+    });
+
+    if (authToken !== undefined && userName !== undefined) {
+      getUser(userName, authToken).then((userInfo) => {
+        setFirstName(userInfo.data.userFirstName);
+        setLastName(userInfo.data.userLastName);
+        setEmail(userInfo.data.userEmail);
+        setUserType(userInfo.data.userType);
+      });
+    }
+
+    if (authToken !== undefined && userName !== undefined) {
+      getReviewByUser(userName, authToken).then((review) => {
+        setReviews(review.data.existingReviews);
+      });
+    }
+  }, [authToken, userName, reviews]);
 
   return (
     <div className="flex justify-center text-center flex-col font-mono">
       <div className="flex flex-row bg-red-900 h-12">
-        <div className="flex text-white items-center">
-          <img className="mx-2 h-12 w-12" src={smallRecenseo}></img>
-          <div className="m-auto text-2xl hover:bg-red-800 rounded-lg">
-            <Link to="/" className="p-5">Home</Link>
-          </div>
-          <div className="m-auto text-2xl hover:bg-red-800 rounded-lg">
-            <Link to="/browse" className="p-5">Browse</Link>
-          </div>
+        <div className="w-full flex text-white items-center justify-start">
+          <RecenseoLogo />
         </div>
 
 
         <div className="w-full flex text-white items-center justify-end mr-4">
           <UserCircleIcon className="h-12 w-12 mr-4"></UserCircleIcon>
-          <p> Placeholder</p>
+          <p> {userName}</p>
         </div>
       </div>
 
       <div className="flex flex-row items-center ml-16 mt-24">
         <UserCircleIcon className="h-36 w-36"></UserCircleIcon>
         <div className="flex flex-col">
-          <p className="text-xl font-semibold">Placeholder</p>
-          <p className="text-lg font-thin">Degree</p>
+          <p className="text-xl font-semibold">{userName}</p>
         </div>
       </div>
 
       <hr className="my-4 mx-auto w-11/12 h-1 bg-gray-100 rounded md:my-10 dark:bg-gray-700"></hr>
 
-      <div className="justify-center flex flex-row gap-12">
+      <div className="justify-center flex flex-row gap-12 ml-4 mr-4">
         <p
           className="hover:underline hover:cursor-pointer"
           onClick={() => setTabState("baseInfo")}
@@ -106,30 +114,6 @@ function ProfilePage() {
                 lastName
               )}
             </span>
-            <span>
-              Degree Stream:&nbsp;
-              {editMode ? (
-                <input
-                  type="text"
-                  placeholder={`${degree}`}
-                  onChange={(event) => setDegree(event.target.value)}
-                />
-              ) : (
-                degree
-              )}
-            </span>
-            <span>
-              Major:&nbsp;
-              {editMode ? (
-                <input
-                  type="text"
-                  placeholder={`${major}`}
-                  onChange={(event) => setMajor(event.target.value)}
-                />
-              ) : (
-                major
-              )}
-            </span>
             <button
               className="hover:underline hover:cursor-pointer"
               onClick={() => setEditMode(true)}
@@ -139,7 +123,20 @@ function ProfilePage() {
             {editMode && (
               <button
                 className="hover:underline hover:cursor-pointer"
-                onClick={() => setEditMode(false)}
+                onClick={() => {
+                  setEditMode(false);
+                  updateUser(
+                    {
+                      userName: userName,
+                      userEmail: email,
+                      userFirstName: firstName,
+                      userLastName: lastName,
+                      userType: userType,
+                      userIsReported: false,
+                    },
+                    authToken
+                  );
+                }}
               >
                 Save Changes
               </button>
@@ -163,18 +160,7 @@ function ProfilePage() {
                 email
               )}
             </span>
-            <span className="flex flex-row">
-              Password:&nbsp;
-              {editMode ? (
-                <input
-                  type="password"
-                  placeholder="Enter new password"
-                  onChange={(event) => setPassword(event.target.value)}
-                />
-              ) : (
-                <p> ******* </p>
-              )}
-            </span>
+
             <button
               className="hover:underline hover:cursor-pointer"
               onClick={() => setEditMode(true)}
@@ -184,7 +170,20 @@ function ProfilePage() {
             {editMode && (
               <button
                 className="hover:underline hover:cursor-pointer"
-                onClick={() => setEditMode(false)}
+                onClick={() => {
+                  setEditMode(false);
+                  updateUser(
+                    {
+                      userName: userName,
+                      userEmail: email,
+                      userFirstName: firstName,
+                      userLastName: lastName,
+                      userType: userType,
+                      userIsReported: false,
+                    },
+                    authToken
+                  );
+                }}
               >
                 Save Changes
               </button>
@@ -194,22 +193,70 @@ function ProfilePage() {
       )}
 
       {tabState === "ratings" && (
-        <div className="flex justify-center">
-          {/** PROBABLY THE CARD COMPONENT FOR RATINGS HERE */}
-          <div className="text-left flex flex-col mt-12 space-y-4">
-            <ReviewCard></ReviewCard>
+        <div className="w-full flex justify-center">
+          <div className="flex flex-col w-8/12 mt-4 space-y-4">
+            {editReview && (
+              <EditReview
+                courseName={reviews[index].reviewCreatedFor}
+                comment={reviews[index].reviewComment}
+                rating={reviews[index].reviewRating}
+                difficulty={reviews[index].reviewDifficulty}
+                tags={reviews[index].reviewInfoTags}
+                authToken={authToken}
+                userName={userName}
+                professor={reviews[index].reviewProfessor}
+                reviewId={reviews[index]._id}
+                setEditReview={setEditReview}
+              />
+            )}
+            {reviews?.map((review, index) => (
+              <div className="flex flex-row">
+                <div className="w-full">
+                  <ReviewCard
+                    courseTags={review.reviewInfoTags}
+                    courseRating={review.reviewRating}
+                    courseDifficulty={review.reviewDifficulty}
+                    courseProfessor={review.reviewProfessor}
+                    courseComment={review.reviewComment}
+                    courseName={review.reviewCreatedFor}
+                  />
+                </div>
+
+                <div className="flex justify-end items-center">
+                  <div className="flex flex-col space-y-4">
+                    <button
+                      className="hover:underline"
+                      onClick={() => {
+                        setEditReview(true);
+                        setIndex(index);
+                      }}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className="hover:underline ml-5"
+                      onClick={() => {
+                        deleteReview(review._id, userName, authToken);
+                      }}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       )}
 
       <footer className="flex flex-row bg-red-900 h-12 mt-8 w-full fixed bottom-0">
-        <div className="w-full flex text-white items-center justify-start">
+        <div className="w-full flex text-white text-xs items-center justify-start">
           <p className="ml-4">
             © 2022 Seng 513 - Group 7 Inc. All Rights Reserved
           </p>
         </div>
         <div className="w-full flex text-white items-center justify-end">
-          <img className="h-12 w-12 mr-4" src={smallRecenseo}></img>
+          <RecenseoLogo />
         </div>
       </footer>
     </div>

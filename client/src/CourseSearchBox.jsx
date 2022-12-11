@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { Combobox } from "@headlessui/react";
-import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import { Link } from "react-router-dom";
 import { getCourse } from "./backendhelpers/courseHelpers";
 
@@ -29,8 +28,7 @@ const CourseSearchBox = (props) => {
         });
 
   return (
-    <div className="flex flex-row">
-      <MagnifyingGlassIcon className="h-6 w-6 mr-2"></MagnifyingGlassIcon>
+    <div>
       <Combobox
         className="border-black border-2"
         as="div"

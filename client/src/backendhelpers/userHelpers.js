@@ -1,5 +1,5 @@
 import axios from "axios";
-import { setUserLoggedIn, setName } from "../landingPage/LandingPage.jsx";
+import { setUserLoggedIn, setName } from "../AuthenticationComponents";
 
 const endpointBase = "http://localhost:5001/api/users/";
 
@@ -23,31 +23,42 @@ reqBody is a JSON of the following format:
  */
 
 const customConfig = {
+  withCredentials: true,
+  credentials: "include",
   headers: {
-  'Content-Type': 'application/json'
-  }
-}
-
-export const signUpUser = async (reqBody, props) => {
-  await axios.post(endpointBase + "signup", reqBody, customConfig)
-  .then(function(response) {
-    if (response.status === 200) {
-      setUserLoggedIn(true);
-      props.onFormSwitch("");
-      //alert("Signed up successfully!");
-    }
-  })
-  .catch(function (error) {
-    if (error.response){
-      alert(error.response.data.error);
-    }else if(error.request){
-      alert(error.request.data);
-    }else if(error.message){
-      alert(error.message.data);
-    }
-  });
+    "Content-Type": "application/json",
+  },
 };
 
+export const signUpUser = async (reqBody, props) => {
+  await axios
+    .post(endpointBase + "signup", reqBody, customConfig)
+    .then(function (response) {
+      if (response.status === 200) {
+        setUserLoggedIn(true);
+        props.onFormSwitch("");
+        //alert("Signed up successfully!");
+      }
+    })
+    .catch(function (error) {
+      if (error.response) {
+        alert(error.response.data.error);
+      } else if (error.request) {
+        alert(error.request.data);
+      } else if (error.message) {
+        alert(error.message.data);
+      }
+    });
+};
+
+export const getUser = async (userName, userToken, next) => {
+  const headers = {
+    Authorization: "bearer " + userToken,
+  };
+  return await axios
+    .get(endpointBase + "getuser/" + userName, { headers: headers })
+    .then(next);
+};
 
 /* reqBody is the request body required to log in a user
 
@@ -65,30 +76,31 @@ reqBody is a JSON of the following format:
  */
 
 export const logInUser = async (reqBody, props) => {
-  await axios.post(endpointBase + "login", reqBody, customConfig, {
+  await axios
+    .post(endpointBase + "login", reqBody, customConfig, {
       withCredentials: true,
       credentials: "include",
     })
-  .then(function(response) {
-    if (response.status === 200) {
-      setUserLoggedIn(true);
-      let data = JSON.parse(reqBody);
-      console.log(reqBody);
-      setName(data.userName);
-      //alert("Logged in successfully!");
-      props.onFormSwitch("");
-    }
-  }).catch(function (error) {
-    if (error.response){
+    .then(function (response) {
+      if (response.status === 200) {
+        setUserLoggedIn(true);
+        let data = JSON.parse(reqBody);
+        console.log(reqBody);
+        setName(data.userName);
+
+        props.onFormSwitch("");
+      }
+    })
+    .catch(function (error) {
+      if (error.response) {
         alert(error.response.data.error);
-      }else if(error.request){
+      } else if (error.request) {
         alert(error.request.data);
-      }else if(error.message){
+      } else if (error.message) {
         alert(error.message.data);
       }
-  });
+    });
 };
-
 
 /* reqBody is the request body with the username of the account to delete
 
@@ -133,7 +145,7 @@ reqBody is a JSON of the following format:
 
  This API call will update a user account using the username and authentication token.
  */
-export const updateUser = async (reqBody, next, userToken) => {
+export const updateUser = async (reqBody, userToken,  next) => {
   const headers = {
     Authorization: "bearer " + userToken,
   };

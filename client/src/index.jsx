@@ -1,32 +1,27 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import { createBrowserRouter, RouterProvider, Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Route,
+  BrowserRouter as Router,
+  Routes,
+} from "react-router-dom";
 import reportWebVitals from "./reportWebVitals";
 import LandingPage from "./landingPage/LandingPage";
 import ProfilePage from "./profilePage/profilePage";
 import CourseRatePage from "./courseRatePage/courseRatePage";
 import BrowsePage from "./browsePage/BrowsePage";
 
-// const router = createBrowserRouter([
-//   {
-//     path: "/",
-//     element: <LandingPage />,
-//   },
-//   {
-//     path: "/profile",
-//     element: <ProfilePage/>,
-//   },
-// ]);
-
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <Router>
       <Routes>
-        <Route path = "/" element = {<LandingPage/>}/>
-        <Route path = "/profile" element = {<ProfilePage/>}/>
-        <Route path = "/courses/:id" element = {<CourseRatePage/>}/>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/courses/:id" element={<CourseRatePage />} />
         <Route path = "/browse" element = {<BrowsePage/>}/>
       </Routes>
     </Router>

@@ -25,7 +25,7 @@ reqBody is a JSON of the following format:
  This API call will create a review and return a json of the newly created review on success.
  */
 
-export const createReview = async (reqBody, next, userToken) => {
+export const createReview = async (reqBody, userToken, next) => {
   const headers = {
     Authorization: "bearer " + userToken,
   };
@@ -42,11 +42,11 @@ export const createReview = async (reqBody, next, userToken) => {
   
    This API call will get the reviews of a signed in user and return a JSON of all the reviews from the query
    */
-export const getReviewByUser = async (userName, next, userToken) => {
+export const getReviewByUser = async (userName, userToken, next) => {
   const headers = {
     Authorization: "bearer " + userToken,
   };
-  await axios
+  return await axios
     .get(endpointBase + "getuserreview/" + userName, { headers: headers })
     .then(next);
 };
@@ -59,13 +59,12 @@ export const getReviewByUser = async (userName, next, userToken) => {
   
    This API call will get the reviews of a signed in user and return a JSON of all the reviews from the query
    */
-export const getReviewByCourse = async (courseName, next, userToken) => {
-  // WE'LL ADD THIS BACK LATER
-  // const headers = {
-  //   Authorization: "bearer " + userToken,
-  // };
+export const getReviewByCourse = async (courseName, userToken, next) => {
+  const headers = {
+    Authorization: "bearer " + userToken,
+  };
   return await axios
-    .get(endpointBase + "getcoursereview/" + courseName) //{ headers: headers })
+    .get(endpointBase + "getcoursereview/" + courseName, { headers: headers })
     .then(next);
 };
 
@@ -85,12 +84,12 @@ reqBody is a JSON of the following format:
 
  This API call will delete a review using the username and authentication token.
  */
-export const deleteReview = async (reviewId, reqBody, next, userToken) => {
+export const deleteReview = async (reviewId, userName, userToken, next) => {
   const headers = {
     Authorization: "bearer " + userToken,
   };
   await axios
-    .delete(endpointBase + reviewId, reqBody, { headers: headers })
+    .delete(endpointBase + reviewId, {headers: headers, data: {reviewCreatedBy: userName}})
     .then(next);
 };
 
@@ -116,7 +115,7 @@ reqBody is a JSON of the following format:
 
  This API call will update a review using the username and authentication token.
  */
-export const updateReview = async (reviewId, reqBody, next, userToken) => {
+export const updateReview = async (reviewId, reqBody, userToken, next) => {
   const headers = {
     Authorization: "bearer " + userToken,
   };

@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { getUser, logInUser } from "../backendhelpers/userHelpers"; // error
 import Select from "react-select";
-import { createReview } from "../backendhelpers/reviewHelpers";
+import { createReview, updateReview } from "../backendhelpers/reviewHelpers";
 import { useEffect } from "react";
 import { getUserCookie } from "../backendhelpers/cookieHelpers";
 
-const AddReview = (props) => {
+const EditReview = (props) => {
   const tagOptions = [
     { value: "Lecture Heavy", label: "Lecture Heavy" },
     { value: "Textbook Required", label: "Textbook Required" },
@@ -14,24 +14,22 @@ const AddReview = (props) => {
     { value: "Text Heavy", label: "Text Heavy" },
   ];
 
-  const [comment, setComment] = useState("");
-  const [rating, setRating] = useState(1);
-  const [difficulty, setDifficulty] = useState(1);
-  const [selectedTags, setSelectedTags] = useState([]);
-  const [authToken, setAuthToken] = useState("");
-  const [userName, setUserName] = useState("");
-  const [professor, setProfessor] = useState("");
-
-  useEffect(() => {
-    getUserCookie().then((cookie) => {
-      setAuthToken(cookie.data.userAuth);
-      setUserName(cookie.data.userName);
-    });
-  }, []);
+  const [comment, setComment] = useState(props.comment);
+  const [rating, setRating] = useState(props.rating);
+  const [difficulty, setDifficulty] = useState(props.difficulty);
+  const [selectedTags, setSelectedTags] = useState(
+    props.tags.map((tag) => {
+      return { value: tag, label: tag };
+    })
+  );
+  const [authToken, setAuthToken] = useState(props.authToken);
+  const [userName, setUserName] = useState(props.userName);
+  const [professor, setProfessor] = useState(props.professor);
+  const [reviewId, setReviewId] = useState(props.reviewId);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    props.setAddReview(false);
+    props.setEditReview(false);
     const infoTags = [];
     selectedTags.map((tags) => infoTags.push(tags.value));
 
@@ -47,9 +45,7 @@ const AddReview = (props) => {
       reviewIsDeleted: false,
     };
 
-    props.setReviewAdded(true);
-
-    createReview(data, authToken);
+    updateReview(reviewId, data, authToken);
   };
 
   return (
@@ -124,12 +120,18 @@ const AddReview = (props) => {
                   />
                 </div>
                 <div className="px-4 py-3 align-self-center sm:px-6">
-                  <div className="text-center">
+                  <div className="text-center flex flex-row">
                     <button
                       type="submit"
                       className="inline-flex w-full justify-center rounded-md border border-transparent bg-red-800 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
                     >
-                      Create Review
+                      Edit Review
+                    </button>
+                    <button
+                      className="inline-flex w-full justify-center rounded-md border border-transparent bg-red-800 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
+                      onClick={() => props.setEditReview(false)}
+                    >
+                      Cancel
                     </button>
                   </div>
                 </div>
@@ -142,4 +144,4 @@ const AddReview = (props) => {
   );
 };
 
-export default AddReview;
+export default EditReview;
