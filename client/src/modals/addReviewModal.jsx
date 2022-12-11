@@ -24,9 +24,8 @@ const AddReview = (props) => {
 
   useEffect(() => {
     getUserCookie().then((cookie) => {
-      console.log(cookie);
-      // setAuthToken(cookie.data.userAuth);
-      // setUserName(cookie.data.userName);
+      setAuthToken(cookie.data.userAuth);
+      setUserName(cookie.data.userName);
     });
   }, []);
 
@@ -51,10 +50,6 @@ const AddReview = (props) => {
       reviewIsReported: false,
       reviewIsDeleted: false,
     };
-
-    console.log(data);
-    console.log(authToken);
-    console.log(userName);
 
     createReview(data, authToken);
   };
