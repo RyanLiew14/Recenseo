@@ -9,13 +9,7 @@ const Dropdown = (props) => {
   return (
     <div>
       {logout && (
-        <LogoutPopup
-          onClick={() => {
-            setUserLoggedIn(false);
-            props.setLogOut(!props.logout);
-            setLogOut(false);
-          }}
-        />
+        <LogoutPopup setLogOut={setLogOut} propsSetLogOut={props.setLogOut} />
       )}
       <div
         id="options"
