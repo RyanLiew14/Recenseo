@@ -5,7 +5,10 @@ import SignInPopup from "./modals/SignIn";
 import Dropdown from "./dropdownmenu/Dropdown";
 import profileFill from "./svg/person-fill.svg";
 
-import { deleteUserCookie } from "./backendhelpers/cookieHelpers";
+import {
+  deleteUserCookie,
+  getUserCookie,
+} from "./backendhelpers/cookieHelpers";
 
 let userLoggedIn = false;
 
@@ -24,12 +27,22 @@ function AuthenticationComponents() {
   const [logout, setLogOut] = useState(false);
   const [dropdown, setDropDown] = useState(false);
   const [createReview, setCreateReview] = useState(false);
+  const [cookieData, setCookieData] = useState();
+  const [userName, setUserName] = useState();
 
   useEffect(() => {
-    if (!userLoggedIn) {
+    getUserCookie().then((cookie) => {
+      if (Object.keys(cookie).length !== 0) {
+        setCookieData(cookie.data);
+        setUserName(cookie.data.userName);
+      }
+    });
+
+    if (logout) {
       deleteUserCookie();
+      setLogOut(false);
     }
-  }, [logout]);
+  }, [logout, cookieData]);
 
   const toggleForm = (formName) => {
     if (formName === "login") {
@@ -69,7 +82,7 @@ function AuthenticationComponents() {
       )}
 
       <div className="flex flex-row font-mono py-2">
-        {userLoggedIn ? (
+        {userName && cookieData ? (
           <div className="mt-4 flex w-full items-end justify-center flex-col mr-4">
             <div>
               <button
@@ -82,7 +95,7 @@ function AuthenticationComponents() {
                 type="button"
               >
                 <img className="px-4" src={profileFill}></img>
-                {username}
+                {userName}
 
                 <svg
                   class="ml-2 w-4 h-4"
