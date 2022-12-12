@@ -11,13 +11,13 @@ const RateColor = {
   0: "bg-gray-300",
 };
 const DifficultyColor = {
-    1: "bg-green-600",
-    2: "bg-green-500",
-    3: "bg-yellow-500",
-    4: "bg-orange-500",
-    5: "bg-red-500",
-    0: "bg-gray-300",
-  };
+  1: "bg-green-600",
+  2: "bg-green-500",
+  3: "bg-yellow-500",
+  4: "bg-orange-500",
+  5: "bg-red-500",
+  0: "bg-gray-300",
+};
 
 function CourseCard(props) {
   const [courseAvgRating, setCourseAvgRating] = useState(0);
@@ -34,15 +34,15 @@ function CourseCard(props) {
         // calculate total reviews
         setTotalReviews(result.data.existingReviews.length);
 
-        let score = 0;
-        let score1 = 0;
-        let nReviews = result.data.existingReviews.length;
-        if (nReviews > 0) {
-          result.data.existingReviews.map((r) => (score += r.reviewRating));
-          result.data.existingReviews.map((r) => (score1 += r.reviewDifficulty));
-          setCourseAvgRating(score / nReviews);
-          setCourseAvgDifficulty(score1 / nReviews);
-        }
+      let score = 0;
+      let score1 = 0;
+      let nReviews = result.data.existingReviews.length;
+      if (nReviews > 0) {
+        result.data.existingReviews.map((r) => (score += r.reviewRating));
+        result.data.existingReviews.map((r) => (score1 += r.reviewDifficulty));
+        setCourseAvgRating(score / nReviews);
+        setCourseAvgDifficulty(score1 / nReviews);
+      }
     });
 
   }, []);
@@ -72,9 +72,7 @@ function CourseCard(props) {
             </div>
         </div>
     </Link>
-
-  )
-  
+  );
 }
 
 export default CourseCard;

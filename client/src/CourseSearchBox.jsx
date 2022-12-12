@@ -23,7 +23,7 @@ const CourseSearchBox = (props) => {
   const filteredCourses =
     query === ""
       ? [""]
-      : allCourses.filter((course) => {
+      : allCourses?.filter((course) => {
           return course.toLowerCase().includes(query.toLowerCase());
         });
 
@@ -37,9 +37,13 @@ const CourseSearchBox = (props) => {
       >
         <Combobox.Input onChange={(event) => setQuery(event.target.value)} />
 
-        <Combobox.Options className="bg-white hover:bg-red-500">
+        <Combobox.Options className="bg-white">
           {filteredCourses?.map((course) => (
-            <Combobox.Option key={course} value={course}>
+            <Combobox.Option
+              className="hover:bg-red-500"
+              key={course}
+              value={course}
+            >
               <Link to={`/courses/${course}`}>{course}</Link>
             </Combobox.Option>
           ))}

@@ -13,8 +13,8 @@ function LandingPage() {
   return (
     <div className="flex justify-center text-center flex-col font-mono">
       {/* Header */}
-      <div className="flex flex-row justify-between py-2">
-        <div className="flex flex-row">
+      <div className="flex sm:flex-row flex-col items-center justify-between p-2">
+        <div className="flex sm:flex-row flex-col items-center">
           <RecenseoLogo />
           <NavButtons />
         </div>
@@ -40,7 +40,7 @@ function LandingPage() {
         </p>
       </div>
 
-      <div className="flex flex-row place-content-evenly mt-16">
+      <div className="flex sm:flex-row flex-col place-content-evenly mt-16">
         <div className="flex flex-col justify-center items-center">
           <UserGroupIcon className="h-52 w-52" />
           <p>Thousands of reviews, made by real students</p>
