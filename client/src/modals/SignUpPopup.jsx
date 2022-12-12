@@ -14,7 +14,7 @@ const SignUpPopup = (props) => {
     e.preventDefault();
 
     if (confirmPass !== pass) {
-      console.log("The passwords don't match, please double check.");
+      alert("The passwords don't match, please double check.");
       return;
     } else {
       const data = JSON.stringify({
@@ -24,15 +24,11 @@ const SignUpPopup = (props) => {
         userFirstName: firstName,
         userLastName: lastName,
         userType: "Basic",
-        userIsReported: false,
-        userLoggedIn: false,
+        userIsReported: false
       });
       signUpUser(data, props);
     }
   };
-
-  // TO-DO: close form with successful sign up and change page to have name show up in corner
-  // props.onFormSwitch("");
 
   return (
     <div className="fixed inset-0 z-10 overflow-y-auto">
