@@ -5,6 +5,9 @@ import SignUpPopup from "../modals/SignUpPopup";
 import SignInPopup from "../modals/SignIn";
 import CourseCard from "./courseCard";
 import Select from "react-select";
+import AuthenticationComponents from "../AuthenticationComponents";
+import RecenseoLogo from "../RecenseoLogo";
+import NavButtons from "../NavButtons";
 
 import { getCourse } from "../backendhelpers/courseHelpers";
 import { getUserCookie } from "../backendhelpers/cookieHelpers";
@@ -149,44 +152,16 @@ function BrowsePage() {
       {/* Header */}
       <div className="flex flex-row font-mono py-2 justify-between items-center">
         <div className="flex flex-row">
-          <Link to="/" className="flex-col">
-            <img className="ml-4" src={smallRecenseo}></img>
-          </Link>
-          <div className="m-auto text-2xl ml-10 hover:bg-neutral-200 h-10 leading-10 rounded-lg">
-            <Link to="/" className="p-5">Home</Link>
-          </div>
-          <div className="m-auto text-2xl ml-10 hover:bg-neutral-200 h-10 leading-10 rounded-lg">
-            <Link to="/browse" className="p-5">Browse</Link>
-          </div>
+          <RecenseoLogo />
+          <NavButtons />
         </div>
-
-        <div className="w-96 absolute ml-auto mr-auto left-0 right-0">
+        <AuthenticationComponents />
+      </div>
+      <div className="flex-row w-96 ml-auto mr-auto left-0 right-0">
           <Link to="/">
           <img src={bigRecenseo}></img>
           </Link>
         </div>
-
-        <div className="flex flex-col">
-          <div className="flex flex-row gap-3 mr-4">
-            <button
-              onClick={() => {
-                setSignIn(!signIn);
-              }}
-            >
-              Login
-            </button>
-            <button
-              className="bg-red-800 rounded-lg p-1 text-yellow-300"
-              onClick={() => {
-                setSignUp(!signUp);
-              }}
-            >
-              Sign up
-            </button>
-          </div>
-        </div>
-      </div>
-      <hr className="mt-3 mx-10 h-1 bg-black"></hr>
       {/* Desc */}
       <div className="flex-row">
         <p className="text-2xl font-bold mt-10">

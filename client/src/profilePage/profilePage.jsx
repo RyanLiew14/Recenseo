@@ -7,6 +7,7 @@ import { getUser, updateUser } from "../backendhelpers/userHelpers";
 import { deleteReview, getReviewByUser } from "../backendhelpers/reviewHelpers";
 import EditReview from "../modals/editReview";
 import RecenseoLogo from "../RecenseoLogo";
+import NavButtons from "../NavButtons";
 
 function ProfilePage() {
   const [tabState, setTabState] = useState("baseInfo");
@@ -48,6 +49,7 @@ function ProfilePage() {
       <div className="flex flex-row bg-red-900 h-12">
         <div className="w-full flex text-white items-center justify-start">
           <RecenseoLogo />
+          <NavButtons />
         </div>
 
 

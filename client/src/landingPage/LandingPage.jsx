@@ -1,15 +1,5 @@
-import smallRecenseo from "./Small recenseo.svg";
 import bigRecenseo from "./Big Recenseo.svg";
 import CourseSearchBox from "../CourseSearchBox";
-import SignUpPopup from "../modals/SignUpPopup";
-
-import SignInPopup from "../modals/SignIn";
-import LogoutPopup from "../modals/LogoutPopup";
-import Dropdown from "../dropdownmenu/Dropdown";
-import profileFill from "../svg/person-fill.svg";
-import downArrow from "../svg/chevron-down.svg";
-import { Link } from "react-router-dom";
-
 import {
   CheckCircleIcon,
   EyeSlashIcon,
@@ -17,13 +7,16 @@ import {
 } from "@heroicons/react/24/outline";
 import AuthenticationComponents from "../AuthenticationComponents";
 import RecenseoLogo from "../RecenseoLogo";
+import NavButtons from "../NavButtons";
 
 function LandingPage() {
   return (
     <div className="flex justify-center text-center flex-col font-mono">
-      <div className="w-full flex items-center">
-        <div className="w-full">
+      {/* Header */}
+      <div className="flex flex-row justify-between p-2">
+        <div className="flex flex-row">
           <RecenseoLogo />
+          <NavButtons />
         </div>
 
         <AuthenticationComponents />
