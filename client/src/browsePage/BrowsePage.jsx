@@ -1,22 +1,11 @@
 import smallRecenseo from "./Small recenseo.svg";
 import bigRecenseo from "./Big Recenseo.svg";
 import { useState, useEffect } from "react";
-import axios from "axios";
-import CourseSearchBox from "../CourseSearchBox";
 import SignUpPopup from "../modals/SignUpPopup";
 import SignInPopup from "../modals/SignIn";
 import CourseCard from "./courseCard";
-import SortBox from "./SortBox";
-import FacultyBox from "./FacultyBox";
-import LevelBox from "./LevelBox";
 import Select from "react-select";
-import { Combobox } from "@headlessui/react";
 
-import {
-  CheckCircleIcon,
-  EyeSlashIcon,
-  UserGroupIcon,
-} from "@heroicons/react/24/outline";
 import { getCourse } from "../backendhelpers/courseHelpers";
 import { getUserCookie } from "../backendhelpers/cookieHelpers";
 import { Link } from "react-router-dom"
@@ -24,6 +13,7 @@ import { Link } from "react-router-dom"
 
 function BrowsePage() {
   const facultyOptions = [
+    { value: "", label: "All Faculties" },
     { value: "Arts", label: "Arts" },
     { value: "Science", label: "Science" },
     { value: "Business", label: "Business" },
@@ -33,10 +23,11 @@ function BrowsePage() {
     { value: "Education", label: "Education" },
   ];
   const levelOptions = [
-    { value: "200", label: "200" },
-    { value: "300", label: "300" },
-    { value: "400", label: "400" },
-    { value: "500", label: "500" },
+    {value:"", label:"All Levels"},
+    { value: "2", label: "200" },
+    { value: "3", label: "300" },
+    { value: "4", label: "400" },
+    { value: "5", label: "500" },
   ];
   const sortOptions = [
     { value: "Rating", label: "Rating" },
@@ -50,10 +41,11 @@ function BrowsePage() {
   const [signIn, setSignIn] = useState(false);
   const [createReview, setCreateReview] = useState(false);
   const [allCourses, setAllCourses] = useState();
-  const [selectedFaculties, setSelectedFaculties] = useState({value:"", label:"Select"});
-  const [selectedLevels, setSelectedLevels] = useState();
-  const [selectedSort, setSelectedSort] = useState();
+  const [selectedFaculties, setSelectedFaculties] = useState({value:"", label:"All Faculties"});
+  const [selectedLevels, setSelectedLevels] = useState({value:"", label:"All Levels"});
+  const [selectedSort, setSelectedSort] = useState({ value: "Rating", label: "Rating" });
   const [filteredCourses, setFilteredCourses] = useState([]);
+  const [textInput, setTextInput] = useState("");
 
   const toggleForm = (formName) => {
     if (formName === "login") {
@@ -91,24 +83,42 @@ function BrowsePage() {
         }))
       )
     );
-    
-    console.log(allCourses);
-    // Filter allCourses to only include classes with a specific faculty
-    // TODO: maybe re-enable multi select for faculties filter and filter more than one faculty
-    // TODO: Try to filter everything (faculty, level, and sortby) all at once
-    if (selectedFaculties.value != "") {
-      console.log("running with value: " + selectedFaculties.value);
-      setFilteredCourses(allCourses?.filter((course) => course.courseFaculty === selectedFaculties.value));
-    }
+
+    // retrieve the course list, then perform necessary filtering/sorting
+    getCourse().then(function(result) {
+      let courseList = result.data.existingCourses;
+
+      // filter by faculty
+      if (selectedFaculties.value != "") {
+        let temp = courseList.filter((course) => course.courseFaculty === selectedFaculties.value);
+        courseList = temp;
+      }
+
+      // filter by level
+      if (selectedLevels.value != "") {
+        let temp = courseList.filter((course) => course.courseName.substring(course.courseName.length - 3, course.courseName.length - 2) === selectedLevels.value);
+        courseList = temp;
+      }
+
+      // filter by keyword
+      if (textInput != "") {
+        let temp = courseList.filter((course) => course.courseDepartmentAcronym.toLowerCase().includes(textInput.toLowerCase()) 
+        || course.courseNameLong.toLowerCase().includes(textInput.toLowerCase()));
+        courseList = temp;
+      }
+
+      // after all modifications are applied to courseList, set FilteredCourses to courseList
+      setFilteredCourses(
+        courseList.map((course => {
+          return course;
+        }))
+        )
+      }
+    );
 
     getUserCookie().then((cookie) => setCookieData(cookie));
-  }, [selectedFaculties, selectedLevels, selectedSort]);
-  // List of filtered courses that appears on the list
-  // const filteredCourses = 
-  //   selectedFaculties === "" ? allCourses
-  //   : allCourses.filter((course) => {
-  //     return course.courseFaculty.toLowerCase().includes(selectedFaculties.toLowerCase());
-  //   });
+  }, [selectedFaculties, selectedLevels, selectedSort, textInput]);
+
 
   return (
     <div className="flex justify-center text-center flex-col font-mono">
@@ -186,39 +196,56 @@ function BrowsePage() {
 
       {/* Search and filter*/}
       {/* Department and Level search have placeholders for now */}
-      <div className="flex flex-row mx-10 mt-8 justify-between">
-        <div className="flex flex-row h-full">
-          <CourseSearchBox courses={data} className="flex-col"/>
-          <label>Faculty:</label>
-          <Select className="flex-col"
-            name="faculties"
-            options={facultyOptions}
-            value={selectedFaculties}
-            onChange={(e) => {
-                setSelectedFaculties(e);
-            }}
-          />
-          <label>Level:</label>
-          <Select className="flex-col"
-            name="level"
-            options={levelOptions}
-            value={selectedLevels}
-            onChange={(e) => {
-                setSelectedLevels(e);
-            }}
-          />
+      <div className="flex flex-row mx-10 mt-8 h-full justify-around">
+        <div className="flex flex-row">
+
+          <div className="flex-col px-2">
+            <label>Search</label>
+            <input
+              className="rounded border w-full border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 sm:text-sm"
+              value={textInput}
+              onChange={(e) => setTextInput(e.target.value)}
+              type="name"
+              placeholder="Keyword"
+            />
+          </div>
+
+          <div className="flex-col px-2">
+            <label>Faculty</label>
+            <Select
+              name="faculties"
+              options={facultyOptions}
+              value={selectedFaculties}
+              onChange={(e) => {
+                  setSelectedFaculties(e);
+              }}
+            />
+          </div>
+
+          <div className="flex-col px-2">
+            <label>Level</label>
+            <Select
+              name="level"
+              options={levelOptions}
+              value={selectedLevels}
+              onChange={(e) => {
+                  setSelectedLevels(e);
+              }}
+            />
+          </div>
+
         </div>
         
-        <div className="flex-col">
+        {/* <div className="flex-col">
           <Select
-            name="level"
+            name="sort"
             options={sortOptions}
             value={selectedSort}
             onChange={(e) => {
                 setSelectedSort(e);
             }}
           />
-        </div>
+        </div> */}
 
       </div>
       

@@ -11,11 +11,11 @@ const RateColor = {
   0: "bg-gray-300",
 };
 const DifficultyColor = {
-    5: "bg-green-600",
-    4: "bg-green-500",
+    1: "bg-green-600",
+    2: "bg-green-500",
     3: "bg-yellow-500",
-    2: "bg-orange-500",
-    1: "bg-red-500",
+    4: "bg-orange-500",
+    5: "bg-red-500",
     0: "bg-gray-300",
   };
 
@@ -32,18 +32,26 @@ function CourseCard(props) {
   // empty dependency so useEffect only runs once
   // ISSUE: getReviewsByCourse returns Promise {<pending>} values, unless useEffect runs infinitely. idk why
   useEffect(() => {
+    // retrieve the information about reviews from the db
+
     getReviewByCourse(props.courseCode).then(function(result) {
+        console.log(result);
+        // store all reviews in "reviews"
         setReviews(result.data.existingReviews);
+        // calculate total reviews
         setTotalReviews(result.data.existingReviews.length);
+
+        let score = 0;
+        let score1 = 0;
+        let nReviews = result.data.existingReviews.length;
+        if (nReviews > 0) {
+          result.data.existingReviews.map((r) => (score += r.reviewRating));
+          result.data.existingReviews.map((r) => (score1 += r.reviewDifficulty));
+          setCourseAvgRating(score / nReviews);
+          setCourseAvgDifficulty(score1 / nReviews);
+        }
     });
-    let score = 0;
-    let score1 = 0;
-    if (reviews?.length > 0) {
-      reviews.map((review) => (score += review.reviewRating));
-      reviews.map((review) => (score1 += review.reviewDifficulty));
-      setCourseAvgRating(score / reviews.length);
-      setCourseAvgDifficulty(score1 / reviews.length);
-    }
+    console.log(reviews);
   }, []);
 
   return (
