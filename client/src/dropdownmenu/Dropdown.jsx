@@ -19,7 +19,7 @@ const Dropdown = (props) => {
       )}
       <div
         id="options"
-        className="z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600"
+        className="z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600 absolute -ml-20"
       >
         <ul className=" py-1 text-sm text-gray-700 dark:text-gray-200">
           <Link

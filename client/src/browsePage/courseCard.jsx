@@ -25,17 +25,10 @@ function CourseCard(props) {
   const [reviews, setReviews] = useState([]);
   const [totalReviews, setTotalReviews] = useState(0);
 
-  // does not work, returns a Promise { <pending> } instead
-//   const reviews = [];
-//   const totalReviews = 0;
-
-  // empty dependency so useEffect only runs once
-  // ISSUE: getReviewsByCourse returns Promise {<pending>} values, unless useEffect runs infinitely. idk why
   useEffect(() => {
     // retrieve the information about reviews from the db
 
     getReviewByCourse(props.courseCode).then(function(result) {
-        console.log(result);
         // store all reviews in "reviews"
         setReviews(result.data.existingReviews);
         // calculate total reviews
@@ -51,30 +44,30 @@ function CourseCard(props) {
           setCourseAvgDifficulty(score1 / nReviews);
         }
     });
-    console.log(reviews);
+
   }, []);
 
   return (
     <Link to={`/courses/${props.courseCode}`}>
-        <div className="flex border-0 bg-gray-200 shadow-lg p-10">
+        <div className="flex border-0 bg-gray-200 shadow-lg sm:p-10 p-1">
 
-            <div className="flex-col text-xl font-bold basis-1/5">
+            <div className="flex-col sm:text-xl text-base font-bold basis-1/5 px-1">
                 <p>{props.courseCode}</p>
             </div>
-            <div className="flex-col text-lg basis-1/5">
+            <div className="flex-col sm:text-lg text-sm basis-1/5">
                 <p>{props.courseName}</p>
             </div>
             <div className="flex-col basis-1/5">
-                <div className={`${RateColor[Math.round(courseAvgRating)]} text-xl w-1/5 py-2 m-auto min-w-max`}>
+                <div className={`${RateColor[Math.round(courseAvgRating)]} sm:text-xl text-base w-1/5 py-2 m-auto min-w-max`}>
                     {Math.round(courseAvgRating*10)/10}
                 </div>
             </div>
             <div className="flex-col basis-1/5">
-                <div className={`${DifficultyColor[Math.round(courseAvgDifficulty)]} text-xl w-1/5 py-2 m-auto min-w-max`}>
+                <div className={`${DifficultyColor[Math.round(courseAvgDifficulty)]} sm:text-xl text-base w-1/5 py-2 m-auto min-w-max`}>
                     {Math.round(courseAvgDifficulty*10)/10}
                 </div>
             </div>
-            <div className="flex-col basis-1/5 text-xl">
+            <div className="flex-col basis-1/5 sm:text-xl text-base h-full leading-10 text-center">
                 <p>{totalReviews}</p>
             </div>
         </div>
