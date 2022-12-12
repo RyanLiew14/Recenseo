@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { logInUser } from "../backendhelpers/userHelpers"; // error
+import { logInUser } from "../backendhelpers/userHelpers";
 
 const SignInPopup = (props) => {
   const [username, setUserName] = useState("");

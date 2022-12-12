@@ -36,6 +36,8 @@ export const signUpUser = async (reqBody, props) => {
     .then(function (response) {
       if (response.status === 200) {
         setUserLoggedIn(true);
+        let data = JSON.parse(reqBody);
+        setName(data.userName);
         props.onFormSwitch("");
         //alert("Signed up successfully!");
       }
@@ -85,7 +87,6 @@ export const logInUser = async (reqBody, props) => {
       if (response.status === 200) {
         setUserLoggedIn(true);
         let data = JSON.parse(reqBody);
-        console.log(reqBody);
         setName(data.userName);
 
         props.onFormSwitch("");
