@@ -9,6 +9,7 @@ import AddReview from "../modals/addReviewModal";
 import { getUserCookie } from "../backendhelpers/cookieHelpers";
 import AuthenticationComponents from "../AuthenticationComponents";
 import RecenseoLogo from "../RecenseoLogo";
+import NavButtons from "../NavButtons";
 
 function CourseRatePage() {
   const [allCourses, setAllCourses] = useState();
@@ -56,6 +57,7 @@ function CourseRatePage() {
       <div className="flex sm:flex-row flex-col font-mono py-2 items-center">
         <div className="flex w-full sm:justify-start justify-center">
           <RecenseoLogo />
+          <NavButtons />
         </div>
         <div className="h-8">
           <CourseSearchBox courses={allCourses} />
