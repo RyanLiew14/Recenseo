@@ -32,23 +32,17 @@ function BrowsePage() {
     { value: "4", label: "400" },
     { value: "5", label: "500" },
   ];
-  const sortOptions = [
-    { value: "Rating", label: "Rating" },
-    { value: "Difficulty", label: "Difficulty" },
-    { value: "Total Reviews", label: "Total Reviews" },
-  ];
 
   const [data, setData] = useState([]);
   const [cookieData, setCookieData] = useState();
   const [signUp, setSignUp] = useState(false);
   const [signIn, setSignIn] = useState(false);
   const [createReview, setCreateReview] = useState(false);
-  const [allCourses, setAllCourses] = useState();
   const [selectedFaculties, setSelectedFaculties] = useState({value:"", label:"All Faculties"});
   const [selectedLevels, setSelectedLevels] = useState({value:"", label:"All Levels"});
-  const [selectedSort, setSelectedSort] = useState({ value: "Rating", label: "Rating" });
   const [filteredCourses, setFilteredCourses] = useState([]);
   const [textInput, setTextInput] = useState("");
+  const [maxItems, setMaxItems] = useState(10);
 
   const toggleForm = (formName) => {
     if (formName === "login") {
@@ -78,15 +72,6 @@ function BrowsePage() {
       )
     );
 
-    // Retrieve all the courses from the database then store it to allCourses
-    getCourse().then((course) =>
-      setAllCourses(
-        course.data.existingCourses.map((course => {
-          return course;
-        }))
-      )
-    );
-
     // retrieve the course list, then perform necessary filtering/sorting
     getCourse().then(function(result) {
       let courseList = result.data.existingCourses;
@@ -112,7 +97,7 @@ function BrowsePage() {
 
       // after all modifications are applied to courseList, set FilteredCourses to courseList
       setFilteredCourses(
-        courseList.map((course => {
+        courseList.filter((item, index) => index < maxItems).map((course => {
           return course;
         }))
         )
@@ -120,7 +105,7 @@ function BrowsePage() {
     );
 
     getUserCookie().then((cookie) => setCookieData(cookie));
-  }, [selectedFaculties, selectedLevels, selectedSort, textInput]);
+  }, [selectedFaculties, selectedLevels, textInput, maxItems]);
 
 
   return (
@@ -157,21 +142,20 @@ function BrowsePage() {
         </div>
         <AuthenticationComponents />
       </div>
-      <div className="flex-row w-96 ml-auto mr-auto left-0 right-0">
+      <div className="flex-row sm:w-96 w-72 ml-auto mr-auto left-0 right-0">
           <Link to="/">
           <img src={bigRecenseo}></img>
           </Link>
         </div>
       {/* Desc */}
       <div className="flex-row">
-        <p className="text-2xl font-bold mt-10">
+        <p className="sm:text-2xl text-lg font-bold mt-10">
           All University of Calgary Courses
         </p>
       </div>
 
       {/* Search and filter*/}
-      {/* Department and Level search have placeholders for now */}
-      <div className="flex flex-row mx-10 mt-8 h-full justify-around">
+      <div className="flex flex-row sm:mx-10 mx-2 mt-8 h-full justify-around">
         <div className="flex flex-row">
 
           <div className="flex-col px-2">
@@ -227,10 +211,10 @@ function BrowsePage() {
       <hr className="mt-3 mx-10 h-1 bg-neutral-400"></hr>
 
       {/* Course list */}
-      <div className="flex flex-col m-10  justify-center border border-neutral-400">
+      <div className="flex flex-col sm:m-10 m-1 justify-center border border-neutral-400">
 
         {/* column names */}
-        <div className="flex flex-row my-2 text-lg font-semibold m-14">
+        <div className="flex flex-row my-2 sm:text-lg text-sm font-semibold">
           <p className="flex-col basis-1/5">Code</p>
           <p className="flex-col basis-1/5">Name</p>
           <p className="flex-col basis-1/5">Rating</p>
@@ -243,7 +227,7 @@ function BrowsePage() {
         {/* LIST OF COURSES - Formatted as clickable course cards */}
         {/* TODO: Add filter/sort functions */}
         {filteredCourses?.map((course) => (
-          <div className="flex-row m-5">
+          <div className="flex-row sm:m-5 mx-1 my-2">
             <CourseCard
               courseCode={course.courseDepartmentAcronym+" "+course.courseName.match(/\d+/g)}
               courseName={course.courseNameLong}
@@ -251,23 +235,29 @@ function BrowsePage() {
           </div>
         ))}
         
-
+        <button
+          className="flex-row justify-center rounded-md border border-transparent bg-neutral-400 px-4 py-2 text-sm font-medium text-black shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-200 focus:ring-offset-2 sm:text-lg w-1/5 mx-auto mb-5"
+          onClick={() => setMaxItems(maxItems + 10)}
+        >
+          Load More
+        </button>
 
 
       </div>
 
       {/* TODO: fix footer position when page is filled up later */}
-      <footer className="flex flex-row bg-red-900 h-12 absolute inset-x-0 bottom-0">
-        <div className="w-full flex text-white items-center justify-start">
+      <footer className="flex flex-row bg-red-900 h-12 mt-8 bottom-0">
+        <div className="w-full flex text-white text-xs items-center justify-start">
           <p className="ml-4">
             © 2022 Seng 513 - Group 7 Inc. All Rights Reserved
           </p>
         </div>
         <div className="w-full flex text-white items-center justify-end">
-          <img className="h-12 w-12 mr-4" src={smallRecenseo}></img>
+          <RecenseoLogo />
         </div>
       </footer>
     </div>
+
   );
 }
 

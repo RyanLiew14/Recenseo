@@ -81,9 +81,9 @@ function AuthenticationComponents() {
         </div>
       )}
 
-      <div className="flex flex-row font-mono py-2">
+      <div className="flex flex-row font-mono">
         {userName && cookieData ? (
-          <div className="mt-4 flex w-full items-end justify-center flex-col mr-4">
+          <div className="mt-1 flex w-full items-end justify-center flex-col mr-4">
             <div>
               <button
                 onClick={() => {

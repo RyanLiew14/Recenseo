@@ -55,7 +55,7 @@ function LandingPage() {
         </div>
       </div>
 
-      <footer className="flex flex-row bg-red-900 h-12 mt-8">
+      <footer className="flex flex-row bg-red-900 h-12 mt-8 w-full fixed bottom-0">
         <div className="w-full flex text-white text-xs items-center justify-start">
           <p className="ml-4">
             © 2022 Seng 513 - Group 7 Inc. All Rights Reserved
